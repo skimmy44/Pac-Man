@@ -5,6 +5,7 @@ import java.awt.image.BufferStrategy;
 import pacman.display.Display;
 import pacman.gfx.Assets;
 import pacman.gfx.ImageLoader;
+import pacman.worlds.World;
 
 public class Game implements Runnable {
 
@@ -17,6 +18,8 @@ public class Game implements Runnable {
 
     private BufferStrategy bs;
     private Graphics g;
+    
+    private World world;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -26,6 +29,8 @@ public class Game implements Runnable {
 
     public void init() {
         display = new Display(title, width, height);
+        
+        world = new World("res/maps/map.txt");
         
         Assets.init();
     }
@@ -46,10 +51,9 @@ public class Game implements Runnable {
         g.clearRect(0, 0, width, height);
 
         // Draw here:
-        g.drawImage(Assets.title, 200, 50, null);
-        for (int i = 0; i < 4; i++) {
-            g.drawImage(Assets.ghost_scared[i], 50 * i, 50 * i, 50, 50, null);
-        }
+        g.drawImage(Assets.world1, 0, 0, width, height, null);
+        world.render(g);
+        
         // End drawing
         bs.show();
         g.dispose();
