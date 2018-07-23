@@ -3,6 +3,8 @@ package pacman;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import pacman.display.Display;
+import pacman.gfx.Assets;
+import pacman.gfx.ImageLoader;
 
 public class Game implements Runnable {
 
@@ -24,6 +26,8 @@ public class Game implements Runnable {
 
     public void init() {
         display = new Display(title, width, height);
+        
+        Assets.init();
     }
 
     public void tick() {
@@ -42,6 +46,10 @@ public class Game implements Runnable {
         g.clearRect(0, 0, width, height);
 
         // Draw here:
+        g.drawImage(Assets.title, 200, 50, null);
+        for (int i = 0; i < 4; i++) {
+            g.drawImage(Assets.ghost_scared[i], 50 * i, 50 * i, 50, 50, null);
+        }
         // End drawing
         bs.show();
         g.dispose();
