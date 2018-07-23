@@ -1,15 +1,19 @@
 package pacman.worlds;
 
 import java.awt.Graphics;
+import pacman.Handler;
+import pacman.gfx.Assets;
 import pacman.tiles.Tile;
 import pacman.utils.Utils;
 
 public class World {
     
+    private Handler handler;
     private int width, height;
     private int[][] tiles;
     
-    public World(String path) {
+    public World(Handler handler, String path) {
+        this.handler = handler;
         loadWorld(path);
     }
     
@@ -18,6 +22,8 @@ public class World {
     }
     
     public void render(Graphics g) {
+        // Background:
+        g.drawImage(Assets.world1, 0, 0, width * Tile.TILE_WIDTH, height * Tile.TILE_HEIGHT, null);
         // Board
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

@@ -5,21 +5,30 @@ import java.awt.image.BufferStrategy;
 import pacman.display.Display;
 import pacman.gfx.Assets;
 import pacman.gfx.ImageLoader;
+import pacman.states.GameState;
+import pacman.states.State;
 import pacman.worlds.World;
 
 public class Game implements Runnable {
 
+    // Display
     private Display display;
     private String title;
     private int width, height;
 
+    // Main loop
     private boolean running = false;
     private Thread thread;
 
+    // Graphics
     private BufferStrategy bs;
     private Graphics g;
     
-    private World world;
+    // States
+    private State gameState;
+    
+    // Handler
+    private Handler handler;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -29,14 +38,21 @@ public class Game implements Runnable {
 
     public void init() {
         display = new Display(title, width, height);
-        
-        world = new World("res/maps/map.txt");
+        // listeners here...
         
         Assets.init();
+        
+        handler = new Handler(this);
+        
+        gameState = new GameState(handler);
+        State.setCurrentState(gameState);
     }
 
     public void tick() {
-
+        // tick listeneres...
+        
+        if (State.getCurrentState() != null)
+            State.getCurrentState().tick();
     }
 
     public void render(Graphics g) {
@@ -51,8 +67,8 @@ public class Game implements Runnable {
         g.clearRect(0, 0, width, height);
 
         // Draw here:
-        g.drawImage(Assets.world1, 0, 0, width, height, null);
-        world.render(g);
+        if (State.getCurrentState() != null)
+            State.getCurrentState().render(g);
         
         // End drawing
         bs.show();
@@ -91,6 +107,14 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public synchronized void start() {
