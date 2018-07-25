@@ -2,6 +2,7 @@ package pacman.display;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 public class Display {
@@ -27,6 +28,7 @@ public class Display {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon/icon.png")));
         
         canvas = new Canvas();
         canvas.setSize(new Dimension(width, height));
