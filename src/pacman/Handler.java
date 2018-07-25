@@ -1,5 +1,6 @@
 package pacman;
 
+import pacman.input.KeyManager;
 import pacman.worlds.World;
 
 public class Handler {
@@ -9,6 +10,10 @@ public class Handler {
 
     public Handler(Game game) {
         this.game = game;
+    }
+    
+    public KeyManager getKeyManager() {
+        return game.getKeyManager();
     }
     
     public int getWidth() {

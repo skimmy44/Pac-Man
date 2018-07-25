@@ -3,8 +3,10 @@ package pacman;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import pacman.display.Display;
+import pacman.entities.Player;
 import pacman.gfx.Assets;
 import pacman.gfx.ImageLoader;
+import pacman.input.KeyManager;
 import pacman.states.GameState;
 import pacman.states.State;
 import pacman.worlds.World;
@@ -29,20 +31,28 @@ public class Game implements Runnable {
     
     // Handler
     private Handler handler;
+    
+    // Input
+    private KeyManager keyManager;
+    
+    private Player player;
 
     public Game(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
+        keyManager = new KeyManager();
     }
 
     public void init() {
         display = new Display(title, width, height);
-        // listeners here...
+        display.getFrame().addKeyListener(keyManager);
         
         Assets.init();
         
         handler = new Handler(this);
+        
+        player = new Player(handler, 100, 100);
         
         gameState = new GameState(handler);
         State.setCurrentState(gameState);
@@ -53,6 +63,8 @@ public class Game implements Runnable {
         
         if (State.getCurrentState() != null)
             State.getCurrentState().tick();
+        
+        player.tick();
     }
 
     public void render(Graphics g) {
@@ -69,6 +81,8 @@ public class Game implements Runnable {
         // Draw here:
         if (State.getCurrentState() != null)
             State.getCurrentState().render(g);
+        player.render(g);
+        //g.drawImage(Assets.player_eaten[12], 50, 10, 22, 22, null);
         
         // End drawing
         bs.show();
@@ -103,10 +117,16 @@ public class Game implements Runnable {
                 System.out.println("Ticks and frames: " + ticks);
                 ticks = 0;
                 timer = 0;
+                
+                //System.out.println("x, y: " + player.getXTile() + " " + player.getYTile());
             }
         }
 
         stop();
+    }
+
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
 
     public int getWidth() {

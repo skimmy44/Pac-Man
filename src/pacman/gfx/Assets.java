@@ -6,12 +6,13 @@ public class Assets {
 
     private static final int WIDTH = 8, HEIGHT = 8;
 
-    private static final int DIGIT_SIZE = 9, LETTER_SIZE = 9, GHOST_SIZE = 16;
+    private static final int DIGIT_SIZE = 9, LETTER_SIZE = 9, GHOST_SIZE = 16, PLAYER_SIZE = 16;
 
-    public static BufferedImage title;
+    public static BufferedImage title, player;
     public static BufferedImage[] digits, letters;
     public static BufferedImage[] ghost_red, ghost_pink, ghost_blue, ghost_orange,
             ghost_scared, ghost_eaten;
+    public static BufferedImage[] player_eaten;
     public static BufferedImage world1, world2, food, powerFood;
 
     public static void init() {
@@ -29,11 +30,15 @@ public class Assets {
         ghost_scared = loadArray(sheet, 0, 124 + GHOST_SIZE * 4, 4, GHOST_SIZE);
         ghost_eaten = loadArray(sheet, GHOST_SIZE * 4, 124 + GHOST_SIZE * 4, 4, GHOST_SIZE);
         
+        player_eaten = loadArray(sheet, 0, 258, 14, PLAYER_SIZE);
+        
         world1 = sheet.crop(202, 4, 164, 212);
         world2 = sheet.crop(370, 4, 164, 212);
         
         food = sheet.crop(0, 78, 8, 8);
         powerFood = sheet.crop(8, 78, 9, 9);
+        
+        //player = sheet.crop()
     }
     
     private static BufferedImage[] loadArray(SpriteSheet sheet, int x, int y, int n, int SIZE) {
