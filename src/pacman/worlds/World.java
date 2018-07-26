@@ -1,5 +1,6 @@
 package pacman.worlds;
 
+import com.sun.javafx.animation.TickCalculation;
 import java.awt.Graphics;
 import pacman.Handler;
 import pacman.gfx.Assets;
@@ -44,6 +45,13 @@ public class World {
             return Tile.emptyTile;
         }
         return t;
+    }
+    
+    public void eatTile(int x, int y) {
+        if (x < 0 || y < 0 || x >= width || y >= height)
+            return;
+        
+        tiles[x][y] = 0;    // empty tile
     }
     
     private void loadWorld(String path) {

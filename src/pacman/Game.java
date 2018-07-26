@@ -52,7 +52,7 @@ public class Game implements Runnable {
         
         handler = new Handler(this);
         
-        player = new Player(handler, 100, 100);
+        player = new Player(handler, 216, 368);
         
         gameState = new GameState(handler);
         State.setCurrentState(gameState);

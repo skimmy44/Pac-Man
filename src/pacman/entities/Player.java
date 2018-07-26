@@ -15,7 +15,10 @@ public class Player extends Creature {
     public void tick() {
         getInput();
         changeDirection();
+        setMoves();
         move();
+        checkBounds();
+        eat();
     }
 
     private void getInput() {
@@ -34,42 +37,114 @@ public class Player extends Creature {
                 break;
         }
     }
-    
+
     private void changeDirection() {
-        if (nextDirection == Direction.UP) {
-            if (!collisionWithTile(getXTile(), getYTile() - 1)) {
-                currentDirection = Direction.UP;
-                nextDirection = null;
-                return;
-            }
+        switch (nextDirection) {
+            case UP:
+                if (!collisionWithTile(getXTile(), getYTile() - 1)) {
+                    switch (currentDirection) {
+                        case RIGHT:
+                            if (x < getXTile() * Tile.TILE_WIDTH) {
+                                break;
+                            }
+                        case LEFT:
+                            if (x > getXTile() * Tile.TILE_WIDTH) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.UP;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case DOWN:
+                if (!collisionWithTile(getXTile(), getYTile() + 1)) {
+                    switch (currentDirection) {
+                        case RIGHT:
+                            if (x < getXTile() * Tile.TILE_WIDTH) {
+                                break;
+                            }
+                        case LEFT:
+                            if (x > getXTile() * Tile.TILE_WIDTH) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.DOWN;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case LEFT:
+                if (!collisionWithTile(getXTile() - 1, getYTile())) {
+                    switch (currentDirection) {
+                        case UP:
+                            if (y > getYTile() * Tile.TILE_HEIGHT) {
+                                break;
+                            }
+                        case DOWN:
+                            if (y < getYTile() * Tile.TILE_HEIGHT) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.LEFT;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case RIGHT:
+                if (!collisionWithTile(getXTile() + 1, getYTile())) {
+                    switch (currentDirection) {
+                        case UP:
+                            if (y > getYTile() * Tile.TILE_HEIGHT) {
+                                break;
+                            }
+                        case DOWN:
+                            if (y < getYTile() * Tile.TILE_HEIGHT) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.RIGHT;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
         }
-        if (nextDirection == Direction.DOWN) {
-            if (!collisionWithTile(getXTile(), getYTile() + 1)) {
-                System.out.println("x");
-                currentDirection = Direction.DOWN;
-                nextDirection = null;
-                return;
-            }
+    }
+
+    private void setMoves() {
+        switch (currentDirection) {
+            case UP:
+                xMove = 0;
+                yMove = -speed;
+                break;
+            case DOWN:
+                xMove = 0;
+                yMove = speed;
+                break;
+            case LEFT:
+                xMove = -speed;
+                yMove = 0;
+                break;
+            case RIGHT:
+                xMove = speed;
+                yMove = 0;
+                break;
         }
-        if (nextDirection == Direction.LEFT) {
-            if (!collisionWithTile(getXTile() - 1, getYTile())) {
-                currentDirection = Direction.LEFT;
-                nextDirection = null;
-                return;
-            }
-        }
-        if (nextDirection == Direction.RIGHT) {
-            if (!collisionWithTile(getXTile() + 1, getYTile())) {
-                currentDirection = Direction.RIGHT;
-                nextDirection = null;
-                return;
-            }
+    }
+    
+    private void eat() {
+        if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
+            handler.getWorld().eatTile(getXTile(), getYTile());
         }
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player_eaten[0], (Math.round(x / Tile.TILE_WIDTH)) * Tile.TILE_WIDTH, Math.round(y / Tile.TILE_HEIGHT) * Tile.TILE_HEIGHT, width, height, null);
+        g.drawImage(Assets.player_eaten[0], (int) x, (int) y, width, height, null);
     }
 
 }

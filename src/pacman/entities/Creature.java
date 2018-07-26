@@ -1,6 +1,7 @@
 package pacman.entities;
 
 import pacman.Handler;
+import pacman.tiles.Tile;
 
 public abstract class Creature extends Entity {
 
@@ -24,46 +25,76 @@ public abstract class Creature extends Entity {
             currentDirection = nextDirection;
             nextDirection = null;
         } else {
-            if (currentDirection == Direction.UP) {
-                System.out.println("up");
-                y -= speed;
-            } else if (currentDirection == Direction.DOWN) {
-                System.out.println("down");
-                y += speed;
-            } else if (currentDirection == Direction.LEFT) {
-                x -= speed;
-            } else if (currentDirection == Direction.RIGHT) {
-                x += speed;
-            }
+            x += xMove;
+            y += yMove;
         }
     }
 
     public boolean canMove() {
-        if (currentDirection == Direction.UP) {
-            if (collisionWithTile(getXTile(), getYTile() - 1)) {
-                return false;
-            }
-        }
-        if (currentDirection == Direction.DOWN) {
-            if (collisionWithTile(getXTile(), getYTile() + 1)) {
-                return false;
-            }
-        }
-        if (currentDirection == Direction.LEFT) {
-            if (collisionWithTile(getXTile() - 1, getYTile())) {
-                return false;
-            }
-        }
-        if (currentDirection == Direction.RIGHT) {
-            if (collisionWithTile(getXTile() + 1, getYTile())) {
-                return false;
-            }
+        switch (currentDirection) {
+            case UP:
+                if (collisionWithTile(getXTile(), getYTile() - 1)) {
+                    if (y + yMove >= getYTile() * Tile.TILE_HEIGHT) {
+                        return true;
+                    } else {
+                        y = getYTile() * Tile.TILE_HEIGHT;
+                    }
+                    return false;
+                }
+                break;
+            case DOWN:
+                if (collisionWithTile(getXTile(), getYTile() + 1)) {
+                    if (y + yMove <= getYTile() * Tile.TILE_HEIGHT) {
+                        return true;
+                    } else {
+                        y = getYTile() * Tile.TILE_HEIGHT;
+                    }
+                    return false;
+                }
+                break;
+            case LEFT:
+                if (collisionWithTile(getXTile() - 1, getYTile())) {
+                    if (x + xMove >= getXTile() * Tile.TILE_WIDTH) {
+                        return true;
+                    } else {
+                        x = getXTile() * Tile.TILE_WIDTH;
+                    }
+                    return false;
+                }
+                break;
+            case RIGHT:
+                if (collisionWithTile(getXTile() + 1, getYTile())) {
+                    if (x + xMove <= getXTile() * Tile.TILE_WIDTH) {
+                        return true;
+                    } else {
+                        x = getXTile() * Tile.TILE_WIDTH;
+                    }
+                    return false;
+                }
+                break;
         }
         return true;
     }
 
     protected boolean collisionWithTile(int x, int y) {
         return handler.getWorld().getTile(x, y).isSolid();
+    }
+
+    protected void checkBounds() {
+        if (getYTile() != 14) {
+            return;
+        }
+        if (x > -Tile.TILE_WIDTH && x < handler.getWidth()) {
+            return;
+        }
+        if (x <= -Tile.TILE_WIDTH) {
+            x = handler.getWidth();
+            return;
+        }
+        if (x >= handler.getWidth()) {
+            x = -Tile.TILE_WIDTH;
+            return;
+        }
     }
 
     // Getters and Setters
