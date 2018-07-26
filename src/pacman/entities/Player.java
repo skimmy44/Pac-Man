@@ -1,18 +1,35 @@
 package pacman.entities;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import pacman.Handler;
+import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 import pacman.tiles.Tile;
 
 public class Player extends Creature {
 
+    // Animations
+    private Animation animUp, animDown, animLeft, animRight;
+
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
+
+        // Animations
+        animDown = new Animation(50, Assets.player_down);
+        animUp = new Animation(50, Assets.player_up);
+        animLeft = new Animation(50, Assets.player_left);
+        animRight = new Animation(50, Assets.player_right);
     }
 
     @Override
     public void tick() {
+        // Animations
+        animDown.tick();
+        animUp.tick();
+        animLeft.tick();
+        animRight.tick();
+
         getInput();
         changeDirection();
         setMoves();
@@ -135,7 +152,7 @@ public class Player extends Creature {
                 break;
         }
     }
-    
+
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
             handler.getWorld().eatTile(getXTile(), getYTile());
@@ -144,7 +161,21 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player_eaten[0], (int) x, (int) y, width, height, null);
+        g.drawImage(getCurrentAnimationFrame(), (int) x - 4, (int) y - 4, width + 8, height + 8, null);
+    }
+
+    private BufferedImage getCurrentAnimationFrame() {
+        switch (currentDirection) {
+            case UP:
+                return animUp.getCurrentFrame();
+            case DOWN:
+                return animDown.getCurrentFrame();
+            case LEFT:
+                return animLeft.getCurrentFrame();
+            case RIGHT:
+                return animRight.getCurrentFrame();
+        }
+        return animUp.getCurrentFrame();
     }
 
 }
