@@ -13,5 +13,10 @@ public class FoodTile extends Tile {
     public boolean isEatable() {
         return true;
     }
+    
+    @Override
+    public int getScore() {
+        return FOOD_SCORE;
+    }
 
 }

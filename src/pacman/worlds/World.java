@@ -47,11 +47,15 @@ public class World {
         return t;
     }
     
-    public void eatTile(int x, int y) {
+    public int eatTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height)
-            return;
+            return 0;
+        
+        int score = Tile.tiles[tiles[x][y]].getScore();
         
         tiles[x][y] = 0;    // empty tile
+        
+        return score;
     }
     
     private void loadWorld(String path) {

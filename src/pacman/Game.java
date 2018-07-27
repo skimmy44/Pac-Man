@@ -6,6 +6,7 @@ import pacman.display.Display;
 import pacman.entities.Player;
 import pacman.gfx.Assets;
 import pacman.gfx.ImageLoader;
+import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
 import pacman.states.GameState;
 import pacman.states.State;
@@ -35,7 +36,9 @@ public class Game implements Runnable {
     // Input
     private KeyManager keyManager;
     
+    // Game
     private Player player;
+    private int score = 0;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -82,6 +85,8 @@ public class Game implements Runnable {
         if (State.getCurrentState() != null)
             State.getCurrentState().render(g);
         player.render(g);
+        
+        TextRenderer.drawInteger(g, score, 0, 0);
         //g.drawImage(Assets.player_eaten[12], 50, 10, 22, 22, null);
         
         // End drawing
@@ -123,6 +128,10 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+    
+    public void score(int x) {
+        score += x;
     }
 
     public KeyManager getKeyManager() {

@@ -155,7 +155,7 @@ public class Player extends Creature {
 
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
-            handler.getWorld().eatTile(getXTile(), getYTile());
+            handler.getGame().score(handler.getWorld().eatTile(getXTile(), getYTile()));
         }
     }
 

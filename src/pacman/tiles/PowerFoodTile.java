@@ -12,5 +12,10 @@ public class PowerFoodTile extends Tile {
     public boolean isEatable() {
         return true;
     }
+    
+    @Override
+    public int getScore() {
+        return POWER_FOOD_SCORE;
+    }
 
 }

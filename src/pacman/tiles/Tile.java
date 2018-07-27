@@ -12,6 +12,8 @@ public class Tile {
     public static Tile foodTile = new FoodTile(2);
     public static Tile powerFoodTile = new PowerFoodTile(3);
 
+    public static int FOOD_SCORE = 10, POWER_FOOD_SCORE = 50;
+    
     // Class
     public static final int TILE_WIDTH = 16, TILE_HEIGHT = 16;
 
@@ -43,6 +45,10 @@ public class Tile {
     
     public int getId() {
         return id;
+    }
+    
+    public int getScore() {
+        return 0;
     }
 
 }
