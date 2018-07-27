@@ -40,8 +40,8 @@ public class Assets {
         world1 = sheet.crop(202, 4, 164, 212);
         world2 = sheet.crop(370, 4, 164, 212);
 
-        food = sheet.crop(0, 78, 8, 8);
-        powerFood = sheet.crop(8, 78, 9, 9);
+        food = sheet.crop(0, 66, 8, 8);
+        powerFood = sheet.crop(8, 66, 18, 18);
     }
 
     private static BufferedImage[] loadArray(SpriteSheet sheet, int x, int y, int n, int SIZE) {
