@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 public class TextRenderer {
     
-    public static final int LETTER_WIDTH = 16, LETTER_HEIGHT = 16,
-            DIGIT_WIDTH = 16, DIGIT_HEIGHT = 16,
+    public static final int LETTER_WIDTH = 20, LETTER_HEIGHT = 20,
+            DIGIT_WIDTH = 20, DIGIT_HEIGHT = 20,
             VERTICAL_SPACING = 0, HORIZONTAL_SPACING = 0;
     
     public static void drawText(Graphics g, String text, int x, int y) {
@@ -37,7 +37,7 @@ public class TextRenderer {
     }
     
     public static void drawInteger(Graphics g, int num, int x, int y) {
-        String text = Integer.toString(1000000 + num);  // draws correctly numbers up to 999999
+        String text = Integer.toString(10000000 + num);  // draws correctly numbers up to 9999999
         
         for (int i = 1, dx = 0; i < text.length(); i++, dx += DIGIT_WIDTH + HORIZONTAL_SPACING) {
             g.drawImage(Assets.digits[text.charAt(i) - '0'], dx + x, y, DIGIT_WIDTH, DIGIT_HEIGHT, null);

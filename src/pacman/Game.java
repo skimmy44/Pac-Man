@@ -1,5 +1,6 @@
 package pacman;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import pacman.display.Display;
@@ -10,6 +11,7 @@ import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
 import pacman.states.GameState;
 import pacman.states.State;
+import pacman.utils.Utils;
 import pacman.worlds.World;
 
 public class Game implements Runnable {
@@ -38,7 +40,7 @@ public class Game implements Runnable {
     
     // Game
     private Player player;
-    private int score = 0;
+    private int score = 0, high_score = Utils.parseInt(Utils.loadFileAsString("res/score/score.txt").split("\\s+")[0]);
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -80,14 +82,24 @@ public class Game implements Runnable {
 
         // Clear screen
         g.clearRect(0, 0, width, height);
+        
+        g.setColor(Color.black);
+        g.fillRect(0, 0, width, height);
+        
+        g.translate(0, 55);
 
         // Draw here:
         if (State.getCurrentState() != null)
             State.getCurrentState().render(g);
         player.render(g);
         
-        TextRenderer.drawInteger(g, score, 0, 0);
-        //g.drawImage(Assets.player_eaten[12], 50, 10, 22, 22, null);
+        TextRenderer.drawText(g, "score", 20, -50);
+        TextRenderer.drawInteger(g, score, 20, -25);
+        
+        TextRenderer.drawText(g, "high score", 225, -50);
+        TextRenderer.drawInteger(g, high_score, 285, -25);
+        
+        TextRenderer.drawText(g, "lives", 20, 501);
         
         // End drawing
         bs.show();
