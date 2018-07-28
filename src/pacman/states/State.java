@@ -10,6 +10,16 @@ import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
 
 public abstract class State {
+    
+    /* States to be implemented:
+        title
+        ready
+        playing (game state)
+        pacman died
+        ghost catched
+        level completed
+        game over
+    */
 
     // Static stuff
     private static State currentState = null;
@@ -44,7 +54,7 @@ public abstract class State {
         if (handler.getGame().getScore() > handler.getGame().getHighScore()) {
             handler.getGame().setHighScore(handler.getGame().getScore());
             
-            File file = new File("res/score/score.txt");
+            File file = new File("src/res/score/score.txt");
             String source = Integer.toString(handler.getGame().getHighScore());
             FileWriter f;
 

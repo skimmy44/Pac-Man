@@ -6,7 +6,7 @@ import pacman.entities.Creature.Direction;
 
 public class KeyManager implements KeyListener {
 
-    public Direction dir = Direction.UP;
+    public Direction dir = Direction.RIGHT;
     public boolean space = false;
 
     public KeyManager() {
