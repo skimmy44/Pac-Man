@@ -3,6 +3,7 @@ package pacman.worlds;
 import com.sun.javafx.animation.TickCalculation;
 import java.awt.Graphics;
 import pacman.Handler;
+import pacman.entities.EntityManager;
 import pacman.gfx.Assets;
 import pacman.tiles.Tile;
 import pacman.utils.Utils;
@@ -13,18 +14,23 @@ public class World {
     private int width, height;
     private int[][] tiles;
     
+    // Entities
+    private EntityManager entityManager;
+    
     public World(Handler handler, String path) {
         this.handler = handler;
+        entityManager = new EntityManager(handler);
         loadWorld(path);
     }
     
     public void tick() {
-        
+        entityManager.tick();
     }
     
     public void render(Graphics g) {
         // Background:
         g.drawImage(Assets.world1, 0, 0, width * Tile.TILE_WIDTH, height * Tile.TILE_HEIGHT, null);
+        
         // Board
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -33,7 +39,7 @@ public class World {
         }
         
         // Entities (player and ghosts)
-        //...
+        entityManager.render(g);
     }
     
     public Tile getTile(int x, int y) {
@@ -76,6 +82,10 @@ public class World {
 
     public int getHeight() {
         return height;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 
 }

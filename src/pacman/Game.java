@@ -44,7 +44,7 @@ public class Game implements Runnable {
     private Player player;
     private int score = 0, highScore = Utils.parseInt(Utils.loadFileAsString("src/res/score/score.txt").split("\\s+")[0]);
     private int lives = 3;
-    public static final int MAX_LIVES = 3;
+    public static final int MAX_LIVES = 5;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -61,7 +61,7 @@ public class Game implements Runnable {
 
         handler = new Handler(this);
 
-        player = new Player(handler, 216, 368);
+        //player = new Player(handler, 216, 368);
 
         menuState = new MenuState(handler);
         gameState = new GameState(handler);
@@ -74,8 +74,6 @@ public class Game implements Runnable {
         if (State.getCurrentState() != null) {
             State.getCurrentState().tick();
         }
-
-        player.tick();
     }
 
     public void render(Graphics g) {
@@ -89,6 +87,7 @@ public class Game implements Runnable {
         // Clear screen
         g.clearRect(0, 0, width, height);
 
+        // all black
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
 
@@ -98,7 +97,6 @@ public class Game implements Runnable {
         if (State.getCurrentState() != null) {
             State.getCurrentState().render(g);
         }
-        player.render(g);
 
         // End drawing
         bs.show();
