@@ -9,7 +9,7 @@ public abstract class Creature extends Entity {
         UP, DOWN, LEFT, RIGHT
     }
 
-    protected Direction currentDirection = Direction.UP, nextDirection = null;
+    protected Direction currentDirection = Direction.RIGHT, nextDirection = null;
 
     protected float speed = 2.0f;
     protected float xMove, yMove;

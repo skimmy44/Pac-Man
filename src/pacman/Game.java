@@ -11,6 +11,7 @@ import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
 import pacman.states.GameState;
 import pacman.states.MenuState;
+import pacman.states.ReadyState;
 import pacman.states.State;
 import pacman.utils.Utils;
 import pacman.worlds.World;
@@ -33,6 +34,7 @@ public class Game implements Runnable {
     // States
     private State gameState;
     private State menuState;
+    private State readyState;
 
     // Handler
     private Handler handler;
@@ -64,7 +66,9 @@ public class Game implements Runnable {
         //player = new Player(handler, 216, 368);
 
         menuState = new MenuState(handler);
+        readyState = new ReadyState(handler);
         gameState = new GameState(handler);
+        
         State.setCurrentState(menuState);
     }
 
@@ -181,6 +185,10 @@ public class Game implements Runnable {
 
     public State getGameState() {
         return gameState;
+    }
+
+    public State getReadyState() {
+        return readyState;
     }
 
     public synchronized void start() {

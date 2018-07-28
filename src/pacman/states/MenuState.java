@@ -103,7 +103,7 @@ public class MenuState extends State {
         }
 
         if (titleLoaded && handler.getKeyManager().space) {
-            State.setCurrentState(handler.getGame().getGameState());
+            State.setCurrentState(handler.getGame().getReadyState());
         }
     }
 
