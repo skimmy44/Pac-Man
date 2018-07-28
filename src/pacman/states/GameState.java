@@ -10,18 +10,20 @@ public class GameState extends State {
     
     public GameState(Handler handler) {
         super(handler);
-        world = new World(handler, "res/maps/map.txt");
+        world = new World(handler, "src/res/maps/map.txt");
         handler.setWorld(world);
     }
 
     @Override
     public void tick() {
         world.tick();
+        tickScoreAndLives();
     }
 
     @Override
     public void render(Graphics g) {
         world.render(g);
+        renderScoreAndLives(g);
     }
 
 }

@@ -28,7 +28,7 @@ public class Display {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon/icon.png")));
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/res/icon/icon.png")));
         
         canvas = new Canvas();
         canvas.setSize(new Dimension(width, height));

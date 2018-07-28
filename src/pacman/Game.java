@@ -10,6 +10,7 @@ import pacman.gfx.ImageLoader;
 import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
 import pacman.states.GameState;
+import pacman.states.MenuState;
 import pacman.states.State;
 import pacman.utils.Utils;
 import pacman.worlds.World;
@@ -28,19 +29,22 @@ public class Game implements Runnable {
     // Graphics
     private BufferStrategy bs;
     private Graphics g;
-    
+
     // States
     private State gameState;
-    
+    private State menuState;
+
     // Handler
     private Handler handler;
-    
+
     // Input
     private KeyManager keyManager;
-    
+
     // Game
     private Player player;
-    private int score = 0, high_score = Utils.parseInt(Utils.loadFileAsString("res/score/score.txt").split("\\s+")[0]);
+    private int score = 0, highScore = Utils.parseInt(Utils.loadFileAsString("src/res/score/score.txt").split("\\s+")[0]);
+    private int lives = 3;
+    public static final int MAX_LIVES = 3;
 
     public Game(String title, int width, int height) {
         this.title = title;
@@ -52,23 +56,25 @@ public class Game implements Runnable {
     public void init() {
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager);
-        
+
         Assets.init();
-        
+
         handler = new Handler(this);
-        
+
         player = new Player(handler, 216, 368);
-        
+
+        menuState = new MenuState(handler);
         gameState = new GameState(handler);
-        State.setCurrentState(gameState);
+        State.setCurrentState(menuState);
     }
 
     public void tick() {
         // tick listeneres...
-        
-        if (State.getCurrentState() != null)
+
+        if (State.getCurrentState() != null) {
             State.getCurrentState().tick();
-        
+        }
+
         player.tick();
     }
 
@@ -82,25 +88,18 @@ public class Game implements Runnable {
 
         // Clear screen
         g.clearRect(0, 0, width, height);
-        
+
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
-        
+
         g.translate(0, 55);
 
         // Draw here:
-        if (State.getCurrentState() != null)
+        if (State.getCurrentState() != null) {
             State.getCurrentState().render(g);
+        }
         player.render(g);
-        
-        TextRenderer.drawText(g, "score", 20, -50);
-        TextRenderer.drawInteger(g, score, 20, -25);
-        
-        TextRenderer.drawText(g, "high score", 225, -50);
-        TextRenderer.drawInteger(g, high_score, 285, -25);
-        
-        TextRenderer.drawText(g, "lives", 20, 501);
-        
+
         // End drawing
         bs.show();
         g.dispose();
@@ -134,14 +133,14 @@ public class Game implements Runnable {
                 System.out.println("Ticks and frames: " + ticks);
                 ticks = 0;
                 timer = 0;
-                
+
                 //System.out.println("x, y: " + player.getXTile() + " " + player.getYTile());
             }
         }
 
         stop();
     }
-    
+
     public void score(int x) {
         score += x;
     }
@@ -156,6 +155,34 @@ public class Game implements Runnable {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public State getGameState() {
+        return gameState;
     }
 
     public synchronized void start() {
