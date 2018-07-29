@@ -1,5 +1,6 @@
 package pacman;
 
+import pacman.entities.EntityManager;
 import pacman.input.KeyManager;
 import pacman.worlds.World;
 
@@ -7,6 +8,7 @@ public class Handler {
 
     private Game game;
     private World world;
+    private EntityManager entityManager;
 
     public Handler(Game game) {
         this.game = game;
@@ -38,6 +40,14 @@ public class Handler {
 
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
     
 }

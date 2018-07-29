@@ -6,23 +6,28 @@ import pacman.worlds.World;
 
 public class GameState extends State {
 
-    private World world;
-    
     public GameState(Handler handler) {
         super(handler);
-        world = new World(handler, "src/res/maps/map.txt");
-        handler.setWorld(world);
+    }
+
+    @Override
+    public void start() {
+        State.setCurrentState(this);
     }
 
     @Override
     public void tick() {
-        world.tick();
+        handler.getWorld().tick();
         tickScoreAndLives();
+
+        if (handler.getWorld().isCompleted()) {
+            handler.getGame().getLevelCompletedState().start();
+        }
     }
 
     @Override
     public void render(Graphics g) {
-        world.render(g);
+        handler.getWorld().render(g, true);
         renderScoreAndLives(g);
     }
 

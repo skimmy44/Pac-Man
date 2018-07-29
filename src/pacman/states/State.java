@@ -16,7 +16,7 @@ public abstract class State {
         ready
         playing (game state)
         pacman died
-        ghost catched
+        ghost catched - can also be a ghost state
         level completed
         game over
     */
@@ -38,6 +38,8 @@ public abstract class State {
     public State(Handler handler) {
         this.handler = handler;
     }
+    
+    public abstract void start();
 
     public abstract void tick();
 

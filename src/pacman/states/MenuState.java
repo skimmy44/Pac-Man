@@ -29,10 +29,12 @@ public class MenuState extends State {
 
     public MenuState(Handler handler) {
         super(handler);
-        init();
     }
 
-    private void init() {
+    public void start() {
+        titleLoaded = false;
+        pressSpaceVisible = false;
+        
         xTitle = 50;
         yTitle = -150;
         xAnim = -300;
@@ -54,6 +56,8 @@ public class MenuState extends State {
         for (int i = 0; i < 4; i++) {
             ghostRight[i] = new Animation(50, Assets.ghost_scared_1);
         }
+        
+        State.setCurrentState(this);
     }
 
     @Override
@@ -103,7 +107,7 @@ public class MenuState extends State {
         }
 
         if (titleLoaded && handler.getKeyManager().space) {
-            State.setCurrentState(handler.getGame().getReadyState());
+            handler.getGame().getReadyState().start();
         }
     }
 

@@ -10,6 +10,7 @@ import pacman.gfx.ImageLoader;
 import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
 import pacman.states.GameState;
+import pacman.states.LevelCompletedState;
 import pacman.states.MenuState;
 import pacman.states.ReadyState;
 import pacman.states.State;
@@ -35,6 +36,7 @@ public class Game implements Runnable {
     private State gameState;
     private State menuState;
     private State readyState;
+    private State levelCompletedState;
 
     // Handler
     private Handler handler;
@@ -68,8 +70,10 @@ public class Game implements Runnable {
         menuState = new MenuState(handler);
         readyState = new ReadyState(handler);
         gameState = new GameState(handler);
+        levelCompletedState = new LevelCompletedState(handler);
         
-        State.setCurrentState(menuState);
+        //State.setCurrentState(menuState);
+        menuState.start();
     }
 
     public void tick() {
@@ -183,12 +187,20 @@ public class Game implements Runnable {
         this.lives = lives;
     }
 
+    public State getMenuState() {
+        return menuState;
+    }
+
     public State getGameState() {
         return gameState;
     }
 
     public State getReadyState() {
         return readyState;
+    }
+
+    public State getLevelCompletedState() {
+        return levelCompletedState;
     }
 
     public synchronized void start() {
