@@ -46,7 +46,8 @@ public class Game implements Runnable {
 
     // Game
     private Player player;
-    private int score = 0, highScore = Utils.parseInt(Utils.loadFileAsString("src/res/score/score.txt").split("\\s+")[0]);
+    private int score = 0, highScore;
+    private String highScorePlayer;
     private int lives = 3;
     public static final int MAX_LIVES = 5;
 
@@ -55,18 +56,24 @@ public class Game implements Runnable {
         this.width = width;
         this.height = height;
         keyManager = new KeyManager();
+        
+        String[] tokens = Utils.loadFileAsString("/res/score/score.txt").split("\\s+");
+        highScore = Utils.parseInt(tokens[0]);
+        highScorePlayer = tokens[1];
     }
 
     public void init() {
+        // Display
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager);
 
+        // Assets
         Assets.init();
 
+        // Handler
         handler = new Handler(this);
 
-        //player = new Player(handler, 216, 368);
-
+        // States
         menuState = new MenuState(handler);
         readyState = new ReadyState(handler);
         gameState = new GameState(handler);
@@ -201,6 +208,14 @@ public class Game implements Runnable {
 
     public State getLevelCompletedState() {
         return levelCompletedState;
+    }
+
+    public void setHighScorePlayer(String highScorePlayer) {
+        this.highScorePlayer = highScorePlayer;
+    }
+
+    public String getHighScorePlayer() {
+        return highScorePlayer;
     }
 
     public synchronized void start() {

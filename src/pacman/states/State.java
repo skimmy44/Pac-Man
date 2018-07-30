@@ -10,17 +10,18 @@ import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
 
 public abstract class State {
-    
-    /* States to be implemented:
-        title
-        ready
-        playing (game state)
-        pacman died
-        ghost catched - can also be a ghost state
-        level completed
-        game over
-    */
 
+    /* States to be implemented:
+        - title
+        - ready
+        - playing (game state)
+        pacman died
+        ghost died - can also be a ghost state
+        - level completed
+        game over
+        new record (enter name)
+     */
+    
     // Static stuff
     private static State currentState = null;
 
@@ -38,13 +39,13 @@ public abstract class State {
     public State(Handler handler) {
         this.handler = handler;
     }
-    
+
     public abstract void start();
 
     public abstract void tick();
 
     public abstract void render(Graphics g);
-    
+
     protected void tickScoreAndLives() {
         if (handler.getGame().getLives() < 0) {
             handler.getGame().setLives(0);
@@ -55,9 +56,9 @@ public abstract class State {
 
         if (handler.getGame().getScore() > handler.getGame().getHighScore()) {
             handler.getGame().setHighScore(handler.getGame().getScore());
-            
+
             File file = new File("src/res/score/score.txt");
-            String source = Integer.toString(handler.getGame().getHighScore());
+            String source = Integer.toString(handler.getGame().getHighScore()) + " player";
             FileWriter f;
 
             try {
@@ -77,13 +78,17 @@ public abstract class State {
         TextRenderer.drawText(g, "score", 20, -50);
         TextRenderer.drawInteger(g, handler.getGame().getScore(), 20, -25);
 
+        int length = handler.getGame().getHighScorePlayer().length();
         TextRenderer.drawText(g, "high score", 225, -50);
-        TextRenderer.drawInteger(g, handler.getGame().getHighScore(), 305, -25);
+        TextRenderer.drawInteger(g, handler.getGame().getHighScore(), 300 - length * 16, -25);
 
         TextRenderer.drawText(g, "lives", 20, 501);
         for (int i = 0; i < handler.getGame().getLives(); i++) {
             g.drawImage(Assets.player_left[1], 125 + 30 * i, 496, 30, 30, null);
         }
+
+        TextRenderer.setLetterSize(16);
+        TextRenderer.drawText(g, handler.getGame().getHighScorePlayer(), 425 - length * 16, -21);
     }
 
 }
