@@ -16,8 +16,8 @@ public abstract class Creature extends Entity {
 
     public Creature(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
-        xMove = speed;
-        yMove = -speed;
+        xMove = 0;
+        yMove = 0;
     }
 
     public void move() {
@@ -94,6 +94,27 @@ public abstract class Creature extends Entity {
         if (x >= handler.getWidth()) {
             x = -Tile.TILE_WIDTH;
             return;
+        }
+    }
+    
+    protected void setMoves() {
+        switch (currentDirection) {
+            case UP:
+                xMove = 0;
+                yMove = -speed;
+                break;
+            case DOWN:
+                xMove = 0;
+                yMove = speed;
+                break;
+            case LEFT:
+                xMove = -speed;
+                yMove = 0;
+                break;
+            case RIGHT:
+                xMove = speed;
+                yMove = 0;
+                break;
         }
     }
 

@@ -8,6 +8,7 @@ public class EntityManager {
 
     private Handler handler;
     private Player player;
+    private ArrayList<Ghost> ghosts;
     private ArrayList<Entity> entities;
 
     public EntityManager(Handler handler) {
@@ -15,9 +16,13 @@ public class EntityManager {
         this.player = new Player(handler, 216, 368);
 
         entities = new ArrayList<>();
+        ghosts = new ArrayList<>();
         addEntity(player);
-        
-        // add ghosts here...
+        for (int i = 0; i < 4; i++) {
+            Ghost g = new Ghost(handler, 35 + 30 * i, 80, i);
+            addEntity(g);
+            ghosts.add(g);
+        }
     }
     
     public void tick() {
@@ -51,6 +56,10 @@ public class EntityManager {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public ArrayList<Ghost> getGhosts() {
+        return ghosts;
     }
 
     public ArrayList<Entity> getEntities() {

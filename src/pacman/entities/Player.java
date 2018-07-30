@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.states.State;
 import pacman.tiles.Tile;
 
 public class Player extends Creature {
@@ -36,6 +37,10 @@ public class Player extends Creature {
         move();
         checkBounds();
         eat();
+        
+        if (collisionWithGhost()) {     // pacman died
+            //handler.getGame().getPacmanDiedState().start();
+        }
     }
 
     private void getInput() {
@@ -132,31 +137,28 @@ public class Player extends Creature {
         }
     }
 
-    private void setMoves() {
-        switch (currentDirection) {
-            case UP:
-                xMove = 0;
-                yMove = -speed;
-                break;
-            case DOWN:
-                xMove = 0;
-                yMove = speed;
-                break;
-            case LEFT:
-                xMove = -speed;
-                yMove = 0;
-                break;
-            case RIGHT:
-                xMove = speed;
-                yMove = 0;
-                break;
-        }
-    }
-
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
             handler.getGame().score(handler.getWorld().eatTile(getXTile(), getYTile()));
         }
+    }
+
+    private boolean collisionWithGhost() {
+        //int x = getXTile(), y = getYTile();
+
+        for (Ghost g : handler.getEntityManager().getGhosts()) {
+            if (Math.abs(g.getX() - x) < 20 && Math.abs(g.getY() - y) < 20) {
+                if (g.getMode() == Ghost.Mode.SCARED) { // ghost dies
+                    g.setMode(Ghost.Mode.DIED);
+                    
+                    // points for eating a ghost...
+                } else {
+                    return true;   // pacman dies
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override
