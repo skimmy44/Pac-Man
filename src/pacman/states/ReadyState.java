@@ -23,6 +23,8 @@ public class ReadyState extends State {
         if (world.isCompleted()) {
             world = new World(handler, "/res/maps/map_test.txt");
             handler.setWorld(world);
+        } else {
+            world.createEntityManager();
         }
 
         timer = 0;

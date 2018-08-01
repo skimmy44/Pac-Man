@@ -39,7 +39,7 @@ public class Player extends Creature {
         eat();
         
         if (collisionWithGhost()) {     // pacman died
-            //handler.getGame().getPacmanDiedState().start();
+            handler.getGame().getPacmanDiedState().start();
         }
     }
 

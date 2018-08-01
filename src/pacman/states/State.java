@@ -15,13 +15,12 @@ public abstract class State {
         - title
         - ready
         - playing (game state)
-        pacman died
+        - pacman died
         ghost died - can also be a ghost state
         - level completed
-        game over
+        - game over
         new record (enter name)
      */
-    
     // Static stuff
     private static State currentState = null;
 
@@ -57,7 +56,8 @@ public abstract class State {
         if (handler.getGame().getScore() > handler.getGame().getHighScore()) {
             handler.getGame().setHighScore(handler.getGame().getScore());
 
-            File file = new File("src/res/score/score.txt");
+            //if (handler.getGame().SCORE_TRACKING) {   // if we don't want to create a high score tracking file if it doesn't already exist
+            File file = new File("./score.txt");
             String source = Integer.toString(handler.getGame().getHighScore()) + " player";
             FileWriter f;
 
@@ -68,6 +68,7 @@ public abstract class State {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //}
         }
     }
 
@@ -79,8 +80,9 @@ public abstract class State {
         TextRenderer.drawInteger(g, handler.getGame().getScore(), 20, -25);
 
         int length = handler.getGame().getHighScorePlayer().length();
+        int lengthPixels = (handler.getGame().SCORE_TRACKING) ? length * 16 + 5 : length * 16;
         TextRenderer.drawText(g, "high score", 225, -50);
-        TextRenderer.drawInteger(g, handler.getGame().getHighScore(), 300 - length * 16, -25);
+        TextRenderer.drawInteger(g, handler.getGame().getHighScore(), 305 - lengthPixels, -25);
 
         TextRenderer.drawText(g, "lives", 20, 501);
         for (int i = 0; i < handler.getGame().getLives(); i++) {

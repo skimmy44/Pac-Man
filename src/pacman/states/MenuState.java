@@ -32,6 +32,8 @@ public class MenuState extends State {
     }
 
     public void start() {
+        handler.getGame().newGame();
+        
         titleLoaded = false;
         pressSpaceVisible = false;
         

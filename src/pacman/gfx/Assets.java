@@ -11,11 +11,6 @@ public class Assets {
     public static BufferedImage title, ready, game_over;
     public static BufferedImage[] digits, letters;
     public static BufferedImage[][] ghost_up, ghost_down, ghost_left, ghost_right;
-//    public static BufferedImage[] 
-//            ghost_red_up, ghost_red_down, ghost_red_left, ghost_red_right,
-//            ghost_pink_up, ghost_pink_down, ghost_pink_left, ghost_pink_right,
-//            ghost_blue_up, ghost_blue_down, ghost_blue_left, ghost_blue_right,
-//            ghost_orange_up, ghost_orange_down, ghost_orange_left, ghost_orange_right;
     public static BufferedImage[]
             ghost_scared_1, ghost_scared_2, ghost_eaten;
     public static BufferedImage[] player_eaten, player_up, player_down,
@@ -51,25 +46,12 @@ public class Assets {
         for (int i = 0; i < 4; i++) {
             ghost_down[i] = loadArray(sheet, 0, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
-
-//        ghost_red_right = loadArray(sheet, 0, 124, 2, GHOST_SIZE);
-//        ghost_red_left = loadArray(sheet, GHOST_SIZE * 2, 124, 2, GHOST_SIZE);
-//        ghost_red_up = loadArray(sheet, GHOST_SIZE * 4, 124, 2, GHOST_SIZE);
-//        ghost_red_down = loadArray(sheet, GHOST_SIZE * 6, 124, 2, GHOST_SIZE);
-//        
-//        ghost_pink_right = loadArray(sheet, 0, 124 + GHOST_SIZE, 2, GHOST_SIZE);
-//        ghost_pink_left = loadArray(sheet, GHOST_SIZE * 2, 124 + GHOST_SIZE, 2, GHOST_SIZE);
-//        ghost_pink_up = loadArray(sheet, GHOST_SIZE * 4, 124 + GHOST_SIZE, 2, GHOST_SIZE);
-//        ghost_pink_down = loadArray(sheet, GHOST_SIZE * 6, 124 + GHOST_SIZE, 2, GHOST_SIZE);
-//        
-//        ghost_blue = loadArray(sheet, 0, 124 + GHOST_SIZE * 2, 8, GHOST_SIZE);
-//        ghost_orange = loadArray(sheet, 0, 124 + GHOST_SIZE * 3, 8, GHOST_SIZE);
         
         ghost_scared_1 = loadArray(sheet, 0, 124 + GHOST_SIZE * 4, 2, GHOST_SIZE);
         ghost_scared_2 = loadArray(sheet, GHOST_SIZE * 2, 124 + GHOST_SIZE * 4, 2, GHOST_SIZE);
         ghost_eaten = loadArray(sheet, GHOST_SIZE * 4, 124 + GHOST_SIZE * 4, 4, GHOST_SIZE);
 
-        player_eaten = loadArray(sheet, 0, 258, 14, PLAYER_SIZE);
+        player_eaten = loadArray(sheet, 0, 258, 16, PLAYER_SIZE);
         player_right = loadArray(sheet, 0, 89, 4, PLAYER_SIZE);
         player_left = loadArray(sheet, 0, 105, 4, PLAYER_SIZE);
         player_up = loadArray(sheet, 64, 89, 4, PLAYER_SIZE);

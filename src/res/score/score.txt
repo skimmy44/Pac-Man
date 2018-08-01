@@ -1,1 +1,1 @@
-60 player
+20 player

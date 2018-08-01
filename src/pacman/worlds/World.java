@@ -22,8 +22,7 @@ public class World {
     public World(Handler handler, String path) {
         this.handler = handler;
 
-        entityManager = new EntityManager(handler);
-        handler.setEntityManager(entityManager);
+        createEntityManager();
 
         loadWorld(path);
     }
@@ -103,6 +102,11 @@ public class World {
 
     public int getHeight() {
         return height;
+    }
+    
+    public void createEntityManager() {
+        entityManager = new EntityManager(handler);
+        handler.setEntityManager(entityManager);
     }
 
     public EntityManager getEntityManager() {

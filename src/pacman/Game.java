@@ -9,9 +9,11 @@ import pacman.gfx.Assets;
 import pacman.gfx.ImageLoader;
 import pacman.gfx.TextRenderer;
 import pacman.input.KeyManager;
+import pacman.states.GameOverState;
 import pacman.states.GameState;
 import pacman.states.LevelCompletedState;
 import pacman.states.MenuState;
+import pacman.states.PacmanDiedState;
 import pacman.states.ReadyState;
 import pacman.states.State;
 import pacman.utils.Utils;
@@ -37,6 +39,8 @@ public class Game implements Runnable {
     private State menuState;
     private State readyState;
     private State levelCompletedState;
+    private State pacmanDiedState;
+    private State gameOverState;
 
     // Handler
     private Handler handler;
@@ -45,8 +49,8 @@ public class Game implements Runnable {
     private KeyManager keyManager;
 
     // Game
-    private Player player;
     private int score = 0, highScore;
+    public final boolean SCORE_TRACKING;
     private String highScorePlayer;
     private int lives = 3;
     public static final int MAX_LIVES = 5;
@@ -56,10 +60,25 @@ public class Game implements Runnable {
         this.width = width;
         this.height = height;
         keyManager = new KeyManager();
-        
-        String[] tokens = Utils.loadFileAsString("/res/score/score.txt").split("\\s+");
-        highScore = Utils.parseInt(tokens[0]);
-        highScorePlayer = tokens[1];
+
+        /*
+            The following piece of code checks whether the file with high score data exists.
+            If it doesn't exist (meaning that it's the first time we run the application),
+            we set the high score to 0, and we don't write any name with it. As soon as this 
+            high score gets beaten, the file with new high score will be created and after
+            this, every time we run the application again, we will load that current high score.
+         */
+        String file = Utils.loadExternalFileAsString("./score.txt");
+        if (file != null) {
+            String[] tokens = file.split("\\s+");
+            highScore = Utils.parseInt(tokens[0]);
+            highScorePlayer = tokens[1];
+            SCORE_TRACKING = true;
+        } else {
+            highScore = 0;
+            highScorePlayer = "";
+            SCORE_TRACKING = false;
+        }
     }
 
     public void init() {
@@ -78,9 +97,16 @@ public class Game implements Runnable {
         readyState = new ReadyState(handler);
         gameState = new GameState(handler);
         levelCompletedState = new LevelCompletedState(handler);
-        
+        pacmanDiedState = new PacmanDiedState(handler);
+        gameOverState = new GameOverState(handler);
+
         //State.setCurrentState(menuState);
         menuState.start();
+    }
+
+    public void newGame() {
+        lives = 3;
+        score = 0;
     }
 
     public void tick() {
@@ -208,6 +234,14 @@ public class Game implements Runnable {
 
     public State getLevelCompletedState() {
         return levelCompletedState;
+    }
+
+    public State getPacmanDiedState() {
+        return pacmanDiedState;
+    }
+
+    public State getGameOverState() {
+        return gameOverState;
     }
 
     public void setHighScorePlayer(String highScorePlayer) {
