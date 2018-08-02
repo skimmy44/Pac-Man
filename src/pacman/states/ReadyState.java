@@ -11,20 +11,15 @@ public class ReadyState extends State {
     private int timer;
     private final int T1 = 3000, T2 = 5000;
 
-    private World world;
-
     public ReadyState(Handler handler) {
         super(handler);
-        world = new World(handler, "/res/maps/map_test.txt");
-        handler.setWorld(world);
     }
 
     public void start() {
-        if (world.isCompleted()) {
-            world = new World(handler, "/res/maps/map_test.txt");
-            handler.setWorld(world);
+        if (handler.getWorld().isCompleted()) {
+            handler.setWorld(new World(handler, "/res/maps/map_test.txt"));
         } else {
-            world.createEntityManager();
+            handler.getWorld().createEntityManager();
         }
 
         timer = 0;

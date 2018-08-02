@@ -13,6 +13,7 @@ import pacman.states.GameOverState;
 import pacman.states.GameState;
 import pacman.states.LevelCompletedState;
 import pacman.states.MenuState;
+import pacman.states.NewRecordState;
 import pacman.states.PacmanDiedState;
 import pacman.states.ReadyState;
 import pacman.states.State;
@@ -41,6 +42,7 @@ public class Game implements Runnable {
     private State levelCompletedState;
     private State pacmanDiedState;
     private State gameOverState;
+    private State newRecordState;
 
     // Handler
     private Handler handler;
@@ -51,6 +53,7 @@ public class Game implements Runnable {
     // Game
     private int score = 0, highScore;
     public final boolean SCORE_TRACKING;
+    private boolean newRecord;
     private String highScorePlayer;
     private int lives = 3;
     public static final int MAX_LIVES = 5;
@@ -99,18 +102,22 @@ public class Game implements Runnable {
         levelCompletedState = new LevelCompletedState(handler);
         pacmanDiedState = new PacmanDiedState(handler);
         gameOverState = new GameOverState(handler);
+        newRecordState = new NewRecordState(handler);
 
         //State.setCurrentState(menuState);
         menuState.start();
     }
 
     public void newGame() {
-        lives = 3;
+        lives = 0;
         score = 0;
+        newRecord = false;
+        
+        handler.setWorld(new World(handler, "/res/maps/map_test.txt"));
     }
 
     public void tick() {
-        // tick listeneres...
+        keyManager.tick();
 
         if (State.getCurrentState() != null) {
             State.getCurrentState().tick();
@@ -184,6 +191,7 @@ public class Game implements Runnable {
         score += x;
     }
 
+    // Getters and Setters
     public KeyManager getKeyManager() {
         return keyManager;
     }
@@ -244,6 +252,10 @@ public class Game implements Runnable {
         return gameOverState;
     }
 
+    public State getNewRecordState() {
+        return newRecordState;
+    }
+
     public void setHighScorePlayer(String highScorePlayer) {
         this.highScorePlayer = highScorePlayer;
     }
@@ -252,6 +264,15 @@ public class Game implements Runnable {
         return highScorePlayer;
     }
 
+    public boolean isNewRecord() {
+        return newRecord;
+    }
+
+    public void setNewRecord(boolean newRecord) {
+        this.newRecord = newRecord;
+    }
+
+    // Thread manipulation
     public synchronized void start() {
         if (running) {
             return;

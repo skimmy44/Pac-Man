@@ -8,7 +8,7 @@ public class Assets {
 
     private static final int DIGIT_SIZE = 9, LETTER_SIZE = 9, GHOST_SIZE = 16, PLAYER_SIZE = 16;
 
-    public static BufferedImage title, ready, game_over;
+    public static BufferedImage title, ready, game_over, underscore;
     public static BufferedImage[] digits, letters;
     public static BufferedImage[][] ghost_up, ghost_down, ghost_left, ghost_right;
     public static BufferedImage[]
@@ -26,6 +26,7 @@ public class Assets {
 
         letters = loadArray(sheet, 0, 293, 26, LETTER_SIZE);
         digits = loadArray(sheet, 0, 302, 10, DIGIT_SIZE);
+        underscore = sheet.crop(234, 294, 8, 8);
         
         ghost_right = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {

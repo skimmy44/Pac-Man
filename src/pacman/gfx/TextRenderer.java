@@ -31,7 +31,10 @@ public class TextRenderer {
                 g.drawImage(Assets.digits[c - '0'], dx + x, dy + y, DIGIT_WIDTH, DIGIT_HEIGHT, null);
                 dx += DIGIT_WIDTH + HORIZONTAL_SPACING;
             } else {    // special characters
-                // not supported yet
+                if (c == '_') {
+                    g.drawImage(Assets.underscore, dx + x, dy + y, LETTER_WIDTH, LETTER_HEIGHT, null);
+                            dx += LETTER_WIDTH + HORIZONTAL_SPACING;
+                }
             }
         }
     }

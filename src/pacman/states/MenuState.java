@@ -7,6 +7,7 @@ import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
+import pacman.worlds.World;
 
 public class MenuState extends State {
 
@@ -123,7 +124,6 @@ public class MenuState extends State {
         if (pressSpaceVisible) {
             TextRenderer.drawText(g, "press space to start", 68, 270);
             pressSpaceVisible = false;
-
         }
 
         g.drawImage(getCurrentPlayerFrame(), xAnim, yAnim, 40, 40, null);
