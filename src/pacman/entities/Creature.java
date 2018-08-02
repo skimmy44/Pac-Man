@@ -27,6 +27,12 @@ public abstract class Creature extends Entity {
         } else {
             x += xMove;
             y += yMove;
+            
+            if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
+                x = getXTile() * Tile.TILE_WIDTH;
+            } else {
+                y = getYTile() * Tile.TILE_HEIGHT;
+            }
         }
     }
 
