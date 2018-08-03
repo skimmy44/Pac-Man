@@ -7,7 +7,6 @@ import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
-import pacman.worlds.World;
 
 public class MenuState extends State {
 
@@ -19,25 +18,26 @@ public class MenuState extends State {
 
     private long now, lastTime, t0;
     private int delta;
-    private int v0 = 10;
-    private double a = 0.01;
+    private final int v0 = 10;
+    private final double a = 0.01;
 
     // Animations
     private Animation playerLeft, playerRight;
     private Animation[] ghostLeft, ghostRight;
     private Direction currentDirection = Direction.RIGHT;
-    private int speed = 2;
+    private final int speed = 2;
 
     public MenuState(Handler handler) {
         super(handler);
     }
 
+    @Override
     public void start() {
         handler.getGame().newGame();
-        
+
         titleLoaded = false;
         pressSpaceVisible = false;
-        
+
         xTitle = 50;
         yTitle = -150;
         xAnim = -300;
@@ -59,7 +59,7 @@ public class MenuState extends State {
         for (int i = 0; i < 4; i++) {
             ghostRight[i] = new Animation(50, Assets.ghost_scared_1);
         }
-        
+
         State.setCurrentState(this);
     }
 
@@ -75,7 +75,10 @@ public class MenuState extends State {
                 delta = 0;
             }
             if (yTitle >= 50) {
-                yTitle -= a * (System.currentTimeMillis() - t0);
+                double dy = a * (System.currentTimeMillis() - t0);
+                if (dy < v0) {  // prevents title from going too much backwards which might happen if the program takes too much time to start
+                    yTitle -= dy;
+                }
             }
             if (yTitle >= 150) {
                 titleLoaded = true;
