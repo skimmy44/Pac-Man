@@ -52,7 +52,7 @@ public class NewRecordState extends State {
             } else {
                 newRecordVisible = false;
             }
-            if (total > 3000) {
+            if (total > 2500) {
                 canType = true;
                 newRecordVisible = true;
             }

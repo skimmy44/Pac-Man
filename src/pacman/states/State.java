@@ -105,10 +105,9 @@ public abstract class State {
         TextRenderer.drawInteger(g, handler.getGame().getScore(), 20, -25);
 
         int length = handler.getGame().getHighScorePlayer().length();
-        int lengthPixels = handler.getGame().isNewRecord() || !handler.getGame().SCORE_TRACKING ? 0 : length * 16 + 5;
+        int lengthPixels = handler.getGame().isNewRecord() || length == 0 ? 0 : length * 16 + 5;
         TextRenderer.drawText(g, "high score", 225, -50);
         if (highScoreVisible) {
-            System.out.println(lengthPixels);
             TextRenderer.drawInteger(g, handler.getGame().getHighScore(), 305 - lengthPixels, -25);
         }
 
