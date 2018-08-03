@@ -6,7 +6,7 @@ import pacman.tiles.Tile;
 
 public abstract class Entity {
     
-    public static int DEFAULT_ENTITY_WIDTH = 16, DEFAULT_ENTITY_HEIGHT = 16;
+    public static int DEFAULT_ENTITY_WIDTH = 32, DEFAULT_ENTITY_HEIGHT = 32;
 
     protected Handler handler;
     protected float x, y;

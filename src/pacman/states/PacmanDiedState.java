@@ -2,6 +2,7 @@ package pacman.states;
 
 import java.awt.Graphics;
 import pacman.Handler;
+import pacman.entities.Entity;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 
@@ -51,9 +52,9 @@ public class PacmanDiedState extends State {
         handler.getWorld().render(g, false);
 
         g.drawImage(animation.getCurrentFrame(),
-                (int) handler.getEntityManager().getPlayer().getX() - 4,
-                (int) handler.getEntityManager().getPlayer().getY() - 4,
-                20, 20, null);
+                (int) handler.getEntityManager().getPlayer().getX() - 8,
+                (int) handler.getEntityManager().getPlayer().getY() - 8,
+                Entity.DEFAULT_ENTITY_WIDTH, Entity.DEFAULT_ENTITY_HEIGHT, null);
 
         renderScoreAndLives(g);
     }

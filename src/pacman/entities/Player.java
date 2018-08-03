@@ -162,7 +162,7 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(getCurrentAnimationFrame(), (int) x - 4, (int) y - 4, width + 8, height + 8, null);
+        g.drawImage(getCurrentAnimationFrame(), (int) x - 8, (int) y - 8, width, height, null);
     }
 
     private BufferedImage getCurrentAnimationFrame() {

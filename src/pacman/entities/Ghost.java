@@ -9,9 +9,9 @@ import pacman.gfx.Assets;
 public class Ghost extends Creature {
 
     public static enum Mode {
-        CAGE, NORMAL, SCARED, DIED
+        CAGE, CHASE, SCARED, DIED
     }
-    private Mode mode = Mode.NORMAL;
+    private Mode mode = Mode.CHASE;
 
     // Animations
     private Animation animUp, animDown, animLeft, animRight;
@@ -37,7 +37,7 @@ public class Ghost extends Creature {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(getCurrentAnimationFrame(), (int) x - 4, (int) y - 4, width + 8, height + 8, null);
+        g.drawImage(getCurrentAnimationFrame(), (int) x - 8, (int) y - 8, width, height, null);
     }
 
     private void startAnimations() {

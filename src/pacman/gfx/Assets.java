@@ -58,8 +58,8 @@ public class Assets {
         player_up = loadArray(sheet, 64, 89, 4, PLAYER_SIZE);
         player_down = loadArray(sheet, 64, 105, 4, PLAYER_SIZE);
 
-        world1 = sheet.crop(202, 4, 164, 212);
-        world2 = sheet.crop(370, 4, 164, 212);
+        world1 = sheet.crop(202, 0, 224, 248);
+        world2 = sheet.crop(432, 0, 224, 248);
 
         food = sheet.crop(0, 66, 8, 8);
         powerFood = sheet.crop(8, 66, 18, 18);
