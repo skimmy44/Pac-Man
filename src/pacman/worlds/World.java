@@ -1,6 +1,5 @@
 package pacman.worlds;
 
-import com.sun.javafx.animation.TickCalculation;
 import java.awt.Graphics;
 import pacman.Handler;
 import pacman.entities.EntityManager;

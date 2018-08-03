@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
-import pacman.states.State;
 import pacman.tiles.Tile;
 
 public class Player extends Creature {

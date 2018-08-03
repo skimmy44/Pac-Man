@@ -15,6 +15,7 @@ public class ReadyState extends State {
         super(handler);
     }
 
+    @Override
     public void start() {
         if (handler.getWorld().isCompleted()) {
             handler.setWorld(new World(handler, "/res/maps/map_test.txt"));

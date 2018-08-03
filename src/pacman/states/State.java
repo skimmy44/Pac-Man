@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import jdk.nashorn.internal.ir.Symbol;
 import pacman.Game;
 import pacman.Handler;
 import pacman.gfx.Assets;

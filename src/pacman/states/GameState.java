@@ -2,7 +2,6 @@ package pacman.states;
 
 import java.awt.Graphics;
 import pacman.Handler;
-import pacman.worlds.World;
 
 public class GameState extends State {
 

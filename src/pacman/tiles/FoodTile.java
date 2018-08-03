@@ -1,6 +1,5 @@
 package pacman.tiles;
 
-import java.awt.image.BufferedImage;
 import pacman.gfx.Assets;
 
 public class FoodTile extends Tile {

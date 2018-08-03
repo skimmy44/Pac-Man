@@ -1,7 +1,5 @@
 package pacman;
 
-import pacman.display.Display;
-
 public class Launcher {
 
     public static void main(String[] args) {
