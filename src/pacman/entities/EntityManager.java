@@ -14,12 +14,12 @@ public class EntityManager {
     public EntityManager(Handler handler) {
         this.handler = handler;
         this.player = new Player(handler, 216, 368);
-
+        
         entities = new ArrayList<>();
         ghosts = new ArrayList<>();
         addEntity(player);
         for (int i = 0; i < 4; i++) {
-            Ghost g = new Ghost(handler, 35 + 30 * i, 80, i);
+            Ghost g = new Ghost(handler, 35 + 30 * i, 75, i, player);
             addEntity(g);
             ghosts.add(g);
         }
@@ -39,6 +39,10 @@ public class EntityManager {
 
     public void addEntity(Entity e) {
         entities.add(e);
+    }
+    
+    public Ghost getBlinky() {
+        return ghosts.get(0);
     }
 
     // Getters and Setters

@@ -45,7 +45,7 @@ public class Assets {
         
         ghost_down = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {
-            ghost_down[i] = loadArray(sheet, 0, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
+            ghost_down[i] = loadArray(sheet, GHOST_SIZE * 6, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
         
         ghost_scared_1 = loadArray(sheet, 0, 124 + GHOST_SIZE * 4, 2, GHOST_SIZE);

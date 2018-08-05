@@ -49,7 +49,10 @@ public class World {
 
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
-            return Tile.emptyTile;
+            if (y == 14) {
+                return Tile.emptyTile;
+            }
+            return Tile.wallTile;
         }
 
         Tile t = Tile.tiles[tiles[x][y]];
@@ -58,7 +61,7 @@ public class World {
         }
         return t;
     }
-
+    
     public int eatTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
             return 0;

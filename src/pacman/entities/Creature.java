@@ -37,6 +37,9 @@ public abstract class Creature extends Entity {
     }
 
     public boolean canMove() {
+        if (currentDirection == null) {
+            return false;
+        }
         switch (currentDirection) {
             case UP:
                 if (collisionWithTile(getXTile(), getYTile() - 1)) {
@@ -81,6 +84,86 @@ public abstract class Creature extends Entity {
         }
         return true;
     }
+    
+    protected void changeDirection() {
+        if (nextDirection == null) {
+            return;
+        }
+        switch (nextDirection) {
+            case UP:
+                if (!collisionWithTile(getXTile(), getYTile() - 1)) {
+                    switch (currentDirection) {
+                        case RIGHT:
+                            if (getXTile() * Tile.TILE_WIDTH - x > speed) {
+                                break;
+                            }
+                        case LEFT:
+                            if (x - getXTile() * Tile.TILE_WIDTH > speed) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.UP;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case DOWN:
+                if (!collisionWithTile(getXTile(), getYTile() + 1)) {
+                    switch (currentDirection) {
+                        case RIGHT:
+                            if (getXTile() * Tile.TILE_WIDTH - x > speed) {
+                                break;
+                            }
+                        case LEFT:
+                            if (x - getXTile() * Tile.TILE_WIDTH > speed) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.DOWN;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case LEFT:
+                if (!collisionWithTile(getXTile() - 1, getYTile())) {
+                    switch (currentDirection) {
+                        case UP:
+                            if (y - getYTile() * Tile.TILE_HEIGHT > speed) {
+                                break;
+                            }
+                        case DOWN:
+                            if (getYTile() * Tile.TILE_HEIGHT - y > speed) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.LEFT;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+            case RIGHT:
+                if (!collisionWithTile(getXTile() + 1, getYTile())) {
+                    switch (currentDirection) {
+                        case UP:
+                            if (y - getYTile() * Tile.TILE_HEIGHT > speed) {
+                                break;
+                            }
+                        case DOWN:
+                            if (getYTile() * Tile.TILE_HEIGHT - y > speed) {
+                                break;
+                            }
+                        default:
+                            currentDirection = Direction.RIGHT;
+                            nextDirection = null;
+                            break;
+                    }
+                }
+                break;
+        }
+    }
 
     protected boolean collisionWithTile(int x, int y) {
         return handler.getWorld().getTile(x, y).isSolid();
@@ -104,6 +187,9 @@ public abstract class Creature extends Entity {
     }
     
     protected void setMoves() {
+        if (currentDirection == null) {
+            return;
+        }
         switch (currentDirection) {
             case UP:
                 xMove = 0;
