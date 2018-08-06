@@ -74,6 +74,18 @@ public class World {
 
         return score;
     }
+    
+    public void unlockCage() {
+        for (int x = 12; x < 16; x++) {
+            tiles[x][12] = 0;
+        }
+    }
+    
+    public void lockCage() {
+        for (int x = 10; x < 18; x++) {
+            tiles[x][12] = 1;
+        }
+    }
 
     private void loadWorld(String path) {
         String file = Utils.loadFileAsString(path);

@@ -9,7 +9,7 @@ public class ReadyState extends State {
 
     private long now, lastTime;
     private int timer;
-    private final int T1 = 30, T2 = 50;
+    private final int T1 = 30, T2 = 1000;
 
     public ReadyState(Handler handler) {
         super(handler);

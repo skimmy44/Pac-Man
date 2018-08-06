@@ -18,11 +18,18 @@ public class EntityManager {
         entities = new ArrayList<>();
         ghosts = new ArrayList<>();
         addEntity(player);
-        for (int i = 0; i < 4; i++) {
-            Ghost g = new Ghost(handler, 35 + 30 * i, 75, i, player);
-            addEntity(g);
-            ghosts.add(g);
-        }
+        Ghost g0 = new Ghost(handler, 216, 176, 0, player);
+        Ghost g1 = new Ghost(handler, 186, 232, 1, player);
+        Ghost g2 = new Ghost(handler, 210, 210, 2, player);
+        Ghost g3 = new Ghost(handler, 246, 220, 3, player);
+        addEntity(g0);
+        ghosts.add(g0);
+        addEntity(g1);
+        ghosts.add(g1);
+        addEntity(g2);
+        ghosts.add(g2);
+        addEntity(g3);
+        ghosts.add(g3);
     }
     
     public void tick() {

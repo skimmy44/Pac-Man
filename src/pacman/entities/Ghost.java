@@ -3,58 +3,77 @@ package pacman.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 
 public class Ghost extends Creature {
+    
+    public static boolean CAGE_EXIT_USED = false;
 
     public static enum Mode {
         CAGE, CHASE, SCATTER, SCARED, DIED
     }
-    private Mode mode = Mode.CHASE;
+    private Mode mode = Mode.CAGE;
 
     // Animations
     private Animation animUp, animDown, animLeft, animRight;
     private Animation scared1, scared2;
 
     /*
-    id:
-        0 - red (blinky)
-        1 - pink (pinky)
-        2 - blue (inky)
-        3 - orange (clyde)
+        id:
+            0 - red (blinky)
+            1 - pink (pinky)
+            2 - blue (inky)
+            3 - orange (clyde)
      */
     private final int id;
 
     private final int DEFAULT_X_TARGET, DEFAULT_Y_TARGET;
+    private final int TIME_CAGE;
+    private final int DEFAULT_X_CAGE = 13, DEFAULT_Y_CAGE = 13;
+    
+    private boolean outOfCage = false, startedEscape = false;
+    
     private int xTarget, yTarget;
     private int xNext, yNext;
 
-    //private Direction previousDirection = Direction.LEFT;
+    private Random randomizer;
+
     private Player pacman;
+
+    private long now, lastTime = -1, timer;
 
     public Ghost(Handler handler, float x, float y, int id, Player pacman) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
         this.id = id;
         this.pacman = pacman;
 
+        randomizer = new Random();
+
+        currentDirection = Direction.UP;
         switch (id) {
             case 0:
                 DEFAULT_X_TARGET = 25;
                 DEFAULT_Y_TARGET = -3;
+                TIME_CAGE = 0;
+                currentDirection = Direction.RIGHT;
                 break;
             case 1:
                 DEFAULT_X_TARGET = 2;
                 DEFAULT_Y_TARGET = -3;
+                TIME_CAGE = 2000;
                 break;
             case 2:
                 DEFAULT_X_TARGET = 27;
                 DEFAULT_Y_TARGET = 32;
+                TIME_CAGE = 3000;
                 break;
             default:
                 DEFAULT_X_TARGET = 0;
                 DEFAULT_Y_TARGET = 32;
+                TIME_CAGE = 4000;
                 break;
         }
 
@@ -69,10 +88,36 @@ public class Ghost extends Creature {
         // Animations
         tickAnimations();
 
+        if (lastTime < 0) {
+            lastTime = System.currentTimeMillis();
+            timer = 0;
+        } else {
+            now = System.currentTimeMillis();
+            timer += now - lastTime;
+            lastTime = now;
+        }
+
+        // Cage mode
+        if (mode == Mode.CAGE) {
+            if (timer >= TIME_CAGE || getYTile() <= 12) {
+                startedEscape = true;
+            }
+            if (startedEscape) {
+                handler.getWorld().unlockCage();
+                outOfCage |= getYTile() <= 12;
+                if (outOfCage) {
+                    handler.getWorld().lockCage();
+                    setMode(Mode.SCATTER);
+                }
+            }
+        }
+
+        // Deciding where to move
         retarget();
         turn();
         changeDirection();
 
+        // Moving
         setMoves();
         move();
         checkBounds();
@@ -82,6 +127,11 @@ public class Ghost extends Creature {
         if (mode == Mode.SCATTER) {
             xTarget = DEFAULT_X_TARGET;
             yTarget = DEFAULT_Y_TARGET;
+            return;
+        }
+        if (mode == Mode.DIED) {
+            xTarget = DEFAULT_X_CAGE;
+            yTarget = DEFAULT_Y_CAGE;
             return;
         }
         if (mode == Mode.CHASE) {
@@ -142,43 +192,63 @@ public class Ghost extends Creature {
                     }
                     break;
             }
+            return;
+        }
+        if (mode == Mode.SCARED) {
+            xTarget = randomizer.nextInt(28);
+            yTarget = randomizer.nextInt(31);
         }
     }
 
     private void setNext(Direction dir) {
-        if (xNext == getXTile() && yNext == getYTile()) {
-            switch (dir) {
-                case UP:
-                    yNext = getYTile() - 1;
-                    break;
-                case DOWN:
-                    yNext = getYTile() + 1;
-                    break;
-                case LEFT:
-                    xNext = getXTile() - 1;
-                    if (xNext < 0) {
-                        xNext = 27;
-                    }
-                    break;
-                case RIGHT:
-                    xNext = getXTile() + 1;
-                    if (xNext >= 28) {
-                        xNext = 0;
-                    }
-                    break;
-            }
+        if (dir == null) {
+            xNext = getXTile();
+            yNext = getYTile();
+            return;
+        }
+        switch (dir) {
+            case UP:
+                yNext = getYTile() - 1;
+                xNext = getXTile();
+                break;
+            case DOWN:
+                yNext = getYTile() + 1;
+                xNext = getXTile();
+                break;
+            case LEFT:
+                xNext = getXTile() - 1;
+                if (xNext < 0) {
+                    xNext = 27;
+                }
+                yNext = getYTile();
+                break;
+            case RIGHT:
+                xNext = getXTile() + 1;
+                if (xNext >= 28) {
+                    xNext = 0;
+                }
+                yNext = getYTile();
+                break;
         }
     }
 
     private void turn() {
-        //if (mode == Mode.CHASE) {
-        
-
-        if (!(xNext == getXTile() && yNext == getYTile())) {
+        if (mode == Mode.CAGE) {
+            if (!canMove()) {
+                nextDirection = (currentDirection == Direction.UP) ? Direction.DOWN : Direction.UP;
+                setNext(nextDirection);
+            }
             return;
         }
 
-        double[] dist = new double[4];
+        if (!(xNext == getXTile() && yNext == getYTile())) {
+//            if (currentDirection == null) {
+//                currentDirection = Direction.RIGHT;
+//            }
+            setNext(currentDirection);
+            return;
+        }
+
         boolean[] possibleMove = new boolean[4];
         possibleMove[0] = !handler.getWorld().getTile(getXTile(), getYTile() - 1).isSolid();    // up
         possibleMove[1] = !handler.getWorld().getTile(getXTile(), getYTile() + 1).isSolid();    // down
@@ -200,18 +270,19 @@ public class Ghost extends Creature {
                 break;
         }
 
+        double[] dist = new double[4];
         dist[0] = distance(getXTile(), getYTile() - 1, xTarget, yTarget);   // up
         dist[1] = distance(getXTile(), getYTile() + 1, xTarget, yTarget);   // down
         dist[2] = distance(getXTile() - 1, getYTile(), xTarget, yTarget);   // left
         dist[3] = distance(getXTile() + 1, getYTile(), xTarget, yTarget);   // right
-        
+
         ArrayList<Integer> possibleIndexes = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             if (possibleMove[i]) {
                 possibleIndexes.add(i);
             }
         }
-        
+
         int index = -1;
         double min = 1000;
         for (int i : possibleIndexes) {
@@ -220,47 +291,31 @@ public class Ghost extends Creature {
                 min = dist[i];
             }
         }
-        
+
         if (index == -1) {  // no change in direction
             return;
         }
-        
-        System.out.println("Position: " + getXTile() + ", " + getYTile());
-        System.out.println("current: " + currentDirection);
-        System.out.println("distances");
-        for (int i = 0; i < 4; i++) {
-            System.out.println("    " + dist[i]);
-        }
-        System.out.println("index " + index);
-        
-        
+
         switch (index) {
             case 0:
                 nextDirection = Direction.UP;
-                //currentDirection = Direction.UP;
                 break;
             case 1:
                 nextDirection = Direction.DOWN;
-                //currentDirection = Direction.DOWN;
                 break;
             case 2:
                 nextDirection = Direction.LEFT;
-                //currentDirection = Direction.LEFT;
                 break;
             case 3:
                 nextDirection = Direction.RIGHT;
-                //currentDirection = Direction.RIGHT;
                 break;
         }
-        
-        System.out.println("next: " + nextDirection + "\n");
-        
+
         if (nextDirection != currentDirection) {
             setNext(nextDirection);
         } else {
             setNext(currentDirection);
         }
-        System.out.println("Next position: " + xNext + ", " + yNext);
     }
 
     private double distance(int x, int y) {
@@ -269,6 +324,14 @@ public class Ghost extends Creature {
 
     private double distance(int x1, int y1, int x2, int y2) {
         return Math.hypot(x1 - x2, y1 - y2);
+    }
+
+    private void escapeCage() {
+        //setMode(Mode.SCATTER);
+        setNext(currentDirection);
+
+        handler.getWorld().unlockCage();
+        startedEscape = true;
     }
 
     @Override
@@ -298,7 +361,8 @@ public class Ghost extends Creature {
     private BufferedImage getCurrentAnimationFrame() {
         if (mode == Mode.SCARED) {
             return scared1.getCurrentFrame();
-        } else if (mode == Mode.DIED) {
+        }
+        if (mode == Mode.DIED) {
             switch (currentDirection) {
                 case UP:
                     return Assets.ghost_eaten[2];
