@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.tiles.PowerFoodTile;
 import pacman.tiles.Tile;
 
 public class Player extends Creature {
@@ -61,17 +62,21 @@ public class Player extends Creature {
     
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
-            handler.getGame().score(handler.getWorld().eatTile(getXTile(), getYTile()));
+            int points = handler.getWorld().eatTile(getXTile(), getYTile());
+            handler.getGame().score(points);
+            if (points == Tile.POWER_FOOD_SCORE) {
+                for (Ghost g : handler.getEntityManager().getGhosts()) {
+                    g.enterScaredMode();
+                }
+            }
         }
     }
 
     private boolean collisionWithGhost() {
-        //int x = getXTile(), y = getYTile();
-
         for (Ghost g : handler.getEntityManager().getGhosts()) {
             if (Math.abs(g.getX() - x) < 20 && Math.abs(g.getY() - y) < 20) {
-                if (g.getMode() == Ghost.Mode.SCARED) { // ghost dies
-                    g.setMode(Ghost.Mode.DIED);
+                if (g.getMode() == Ghost.Mode.SCARED || g.getMode() == Ghost.Mode.DIED) { // ghost dies
+                    g.enterDiedMode();
                     
                     // points for eating a ghost...
                 } else {

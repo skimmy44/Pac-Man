@@ -18,7 +18,7 @@ public class ReadyState extends State {
     @Override
     public void start() {
         if (handler.getWorld().isCompleted()) {
-            handler.setWorld(new World(handler, "/res/maps/map_test.txt"));
+            handler.setWorld(new World(handler, "/res/maps/map.txt"));
         } else {
             handler.getWorld().createEntityManager();
         }

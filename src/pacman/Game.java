@@ -101,16 +101,15 @@ public class Game implements Runnable {
         gameOverState = new GameOverState(handler);
         newRecordState = new NewRecordState(handler);
 
-        //State.setCurrentState(menuState);
         menuState.start();
     }
 
     public void newGame() {
-        lives = 0;
+        lives = 3;
         score = 0;
         newRecord = false;
         
-        handler.setWorld(new World(handler, "/res/maps/map_test.txt"));
+        handler.setWorld(new World(handler, "/res/maps/map.txt"));
     }
 
     public void tick() {
@@ -173,11 +172,9 @@ public class Game implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("Ticks and frames: " + ticks);
+                //System.out.println("Ticks and frames: " + ticks);
                 ticks = 0;
                 timer = 0;
-
-                //System.out.println("x, y: " + player.getXTile() + " " + player.getYTile());
             }
         }
 
@@ -185,6 +182,9 @@ public class Game implements Runnable {
     }
 
     public void score(int x) {
+        if (score / 10000 != (score + x) / 10000) { // extra life for every 10,000 points scored
+            lives++;
+        }
         score += x;
     }
 

@@ -9,8 +9,6 @@ import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 
 public class Ghost extends Creature {
-    
-    public static boolean CAGE_EXIT_USED = false;
 
     public static enum Mode {
         CAGE, CHASE, SCATTER, SCARED, DIED
@@ -19,7 +17,7 @@ public class Ghost extends Creature {
 
     // Animations
     private Animation animUp, animDown, animLeft, animRight;
-    private Animation scared1, scared2;
+    private Animation animScared, scared1, scared2;
 
     /*
         id:
@@ -30,12 +28,19 @@ public class Ghost extends Creature {
      */
     private final int id;
 
+    // Target constants, for scatter and died mode
     private final int DEFAULT_X_TARGET, DEFAULT_Y_TARGET;
-    private final int TIME_CAGE;
-    private final int DEFAULT_X_CAGE = 13, DEFAULT_Y_CAGE = 13;
-    
+    private final int DEFAULT_X_CAGE = 13, DEFAULT_Y_CAGE = 11;
+
+    // Time constants, in milliseconds
+    private final int TIME_CAGE,
+            TIME_CHASE_1 = 7000, TIME_SCATTER_2 = 27000,
+            TIME_CHASE_2 = 34000, TIME_SCATTER_3 = 54000,
+            TIME_CHASE_3 = 59000,
+            TIME_SCARED_1 = 5000, TIME_SCARED_2 = 8000;
+
     private boolean outOfCage = false, startedEscape = false;
-    
+
     private int xTarget, yTarget;
     private int xNext, yNext;
 
@@ -43,7 +48,7 @@ public class Ghost extends Creature {
 
     private Player pacman;
 
-    private long now, lastTime = -1, timer;
+    private long now, lastTime = -1, timer, timerScared = 0;
 
     public Ghost(Handler handler, float x, float y, int id, Player pacman) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
@@ -77,8 +82,8 @@ public class Ghost extends Creature {
                 break;
         }
 
-        xNext = getXTile() + 1;
-        yNext = getYTile();
+        //xNext = getXTile() + 1;
+        //yNext = getYTile();
 
         startAnimations();
     }
@@ -88,16 +93,36 @@ public class Ghost extends Creature {
         // Animations
         tickAnimations();
 
+        // Ticking timers
         if (lastTime < 0) {
             lastTime = System.currentTimeMillis();
             timer = 0;
         } else {
             now = System.currentTimeMillis();
             timer += now - lastTime;
+            timerScared += now - lastTime;
             lastTime = now;
         }
+        
+        // Timed changes between chase and scatter mode
+        switchScatterChase();
 
-        // Cage mode
+        tickCageMode();
+        tickScaredMode();
+        tickDiedMode();
+
+        // Deciding where to move
+        retarget();
+        turn();
+        changeDirection();
+
+        // Moving
+        setMoves();
+        move();
+        checkBounds();
+    }
+
+    private void tickCageMode() {
         if (mode == Mode.CAGE) {
             if (timer >= TIME_CAGE || getYTile() <= 12) {
                 startedEscape = true;
@@ -111,16 +136,60 @@ public class Ghost extends Creature {
                 }
             }
         }
+    }
 
-        // Deciding where to move
-        retarget();
-        turn();
-        changeDirection();
+    private void tickScaredMode() {
+        if (mode == Mode.SCARED) {
+            if (timerScared >= TIME_SCARED_2) {
+                speed /= 0.9;
+                setMode(Mode.CHASE);
+            } else if (timerScared >= TIME_SCARED_1) {
+                animScared = timerScared % 200 < 100 ? scared2 : scared1;
+            }
+        }
+    }
+    
+    private void tickDiedMode() {
+        if (mode == Mode.DIED) {
+            if (getXTile() == xTarget && getYTile() == yTarget) {   // returned to cage
+                speed /= 2;
+                setMode(Mode.CHASE);
+            }
+        }
+    }
 
-        // Moving
-        setMoves();
-        move();
-        checkBounds();
+    public void enterScaredMode() {
+        if (mode != Mode.CAGE) {
+            timerScared = 0;
+            speed *= 0.9;
+            setMode(Mode.SCARED);
+        }
+    }
+    
+    public void enterDiedMode() {
+        if (mode != Mode.DIED) {
+            setMode(Mode.DIED);
+            speed /= 0.9;
+            speed *= 2;
+        }
+    }
+
+    private void switchScatterChase() {
+        if (mode == Mode.SCATTER || mode == Mode.CHASE) {
+            if (timer < TIME_CHASE_1) {
+                setMode(Mode.SCATTER);
+            } else if (timer < TIME_SCATTER_2) {
+                setMode(Mode.CHASE);
+            } else if (timer < TIME_CHASE_2) {
+                setMode(Mode.SCATTER);
+            } else if (timer < TIME_SCATTER_3) {
+                setMode(Mode.CHASE);
+            } else if (timer < TIME_CHASE_3) {
+                setMode(Mode.SCATTER);
+            } else {
+                setMode(Mode.SCATTER);
+            }
+        }
     }
 
     private void retarget() {
@@ -326,14 +395,6 @@ public class Ghost extends Creature {
         return Math.hypot(x1 - x2, y1 - y2);
     }
 
-    private void escapeCage() {
-        //setMode(Mode.SCATTER);
-        setNext(currentDirection);
-
-        handler.getWorld().unlockCage();
-        startedEscape = true;
-    }
-
     @Override
     public void render(Graphics g) {
         g.drawImage(getCurrentAnimationFrame(), (int) x - 8, (int) y - 8, width, height, null);
@@ -347,6 +408,7 @@ public class Ghost extends Creature {
 
         scared1 = new Animation(50, Assets.ghost_scared_1);
         scared2 = new Animation(50, Assets.ghost_scared_2);
+        animScared = scared1;
     }
 
     private void tickAnimations() {
@@ -360,7 +422,7 @@ public class Ghost extends Creature {
 
     private BufferedImage getCurrentAnimationFrame() {
         if (mode == Mode.SCARED) {
-            return scared1.getCurrentFrame();
+            return animScared.getCurrentFrame();
         }
         if (mode == Mode.DIED) {
             switch (currentDirection) {
