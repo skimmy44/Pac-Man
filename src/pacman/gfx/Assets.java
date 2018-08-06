@@ -16,6 +16,7 @@ public class Assets {
     public static BufferedImage[] player_eaten, player_up, player_down,
             player_left, player_right;
     public static BufferedImage world1, world2, food, powerFood;
+    public static BufferedImage[] points;
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/textures/sheet.png"));
@@ -26,6 +27,7 @@ public class Assets {
 
         letters = loadArray(sheet, 0, 293, 26, LETTER_SIZE);
         digits = loadArray(sheet, 0, 302, 10, DIGIT_SIZE);
+        points = loadArray(sheet, 0, 236, 4, 16);
         underscore = sheet.crop(234, 294, 8, 8);
         
         ghost_right = new BufferedImage[4][2];

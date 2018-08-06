@@ -12,6 +12,8 @@ public class Player extends Creature {
 
     // Animations
     private Animation animUp, animDown, animLeft, animRight;
+    
+    private int ghostsEaten = 0;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
@@ -77,8 +79,6 @@ public class Player extends Creature {
             if (Math.abs(g.getX() - x) < 20 && Math.abs(g.getY() - y) < 20) {
                 if (g.getMode() == Ghost.Mode.SCARED || g.getMode() == Ghost.Mode.DIED) { // ghost dies
                     g.enterDiedMode();
-                    
-                    // points for eating a ghost...
                 } else {
                     return true;   // pacman dies
                 }

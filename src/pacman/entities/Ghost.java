@@ -7,8 +7,11 @@ import java.util.Random;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.tiles.Tile;
 
 public class Ghost extends Creature {
+
+    public static int ghostsEaten = 0;
 
     public static enum Mode {
         CAGE, CHASE, SCATTER, SCARED, DIED
@@ -43,6 +46,8 @@ public class Ghost extends Creature {
 
     private int xTarget, yTarget;
     private int xNext, yNext;
+    
+    private int xDied, yDied, indexDied, pointsDied;
 
     private Random randomizer;
 
@@ -84,7 +89,6 @@ public class Ghost extends Creature {
 
         //xNext = getXTile() + 1;
         //yNext = getYTile();
-
         startAnimations();
     }
 
@@ -103,7 +107,7 @@ public class Ghost extends Creature {
             timerScared += now - lastTime;
             lastTime = now;
         }
-        
+
         // Timed changes between chase and scatter mode
         switchScatterChase();
 
@@ -148,11 +152,11 @@ public class Ghost extends Creature {
             }
         }
     }
-    
+
     private void tickDiedMode() {
         if (mode == Mode.DIED) {
             if (getXTile() == xTarget && getYTile() == yTarget) {   // returned to cage
-                speed /= 2;
+                speed /= 3;
                 setMode(Mode.CHASE);
             }
         }
@@ -160,17 +164,24 @@ public class Ghost extends Creature {
 
     public void enterScaredMode() {
         if (mode != Mode.CAGE) {
+            Ghost.ghostsEaten = 0;
             timerScared = 0;
             speed *= 0.9;
             setMode(Mode.SCARED);
         }
     }
-    
+
     public void enterDiedMode() {
         if (mode != Mode.DIED) {
-            setMode(Mode.DIED);
+            indexDied = ghostsEaten;
+            xDied = getXTile();
+            yDied = getYTile();
+            pointsDied = (int) (200 * Math.pow(2, ghostsEaten++));
+            handler.getGame().score(pointsDied);
+            
             speed /= 0.9;
-            speed *= 2;
+            speed *= 3;
+            setMode(Mode.DIED);
         }
     }
 
@@ -398,6 +409,10 @@ public class Ghost extends Creature {
     @Override
     public void render(Graphics g) {
         g.drawImage(getCurrentAnimationFrame(), (int) x - 8, (int) y - 8, width, height, null);
+        
+        if (mode == Mode.DIED) {
+            g.drawImage(Assets.points[indexDied], xDied * Tile.TILE_WIDTH - 8, yDied * Tile.TILE_HEIGHT - 8, 32, 32, null);
+        }
     }
 
     private void startAnimations() {
