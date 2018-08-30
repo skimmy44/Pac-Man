@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.sounds.Sound;
 import pacman.tiles.PowerFoodTile;
 import pacman.tiles.Tile;
 
@@ -67,9 +68,12 @@ public class Player extends Creature {
             int points = handler.getWorld().eatTile(getXTile(), getYTile());
             handler.getGame().score(points);
             if (points == Tile.POWER_FOOD_SCORE) {
+                //Sound.play("pacman_eatpower");
                 for (Ghost g : handler.getEntityManager().getGhosts()) {
                     g.enterScaredMode();
                 }
+            } else {
+                //Sound.play("pacman_chomp");
             }
         }
     }

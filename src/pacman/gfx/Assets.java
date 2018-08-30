@@ -1,6 +1,7 @@
 package pacman.gfx;
 
 import java.awt.image.BufferedImage;
+import pacman.sounds.Sound;
 
 public class Assets {
 
@@ -11,12 +12,13 @@ public class Assets {
     public static BufferedImage title, ready, game_over, underscore;
     public static BufferedImage[] digits, letters;
     public static BufferedImage[][] ghost_up, ghost_down, ghost_left, ghost_right;
-    public static BufferedImage[]
-            ghost_scared_1, ghost_scared_2, ghost_eaten;
+    public static BufferedImage[] ghost_scared_1, ghost_scared_2, ghost_eaten;
     public static BufferedImage[] player_eaten, player_up, player_down,
             player_left, player_right;
     public static BufferedImage world1, world2, food, powerFood;
     public static BufferedImage[] points;
+
+    public static Sound sound_beginning, sound_eat, sound_eatpower, sound_died, sound_eatghost, sound_intermission, extralife;
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/textures/sheet.png"));
@@ -29,27 +31,27 @@ public class Assets {
         digits = loadArray(sheet, 0, 302, 10, DIGIT_SIZE);
         points = loadArray(sheet, 0, 236, 4, 16);
         underscore = sheet.crop(234, 294, 8, 8);
-        
+
         ghost_right = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {
             ghost_right[i] = loadArray(sheet, 0, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
-        
+
         ghost_left = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {
             ghost_left[i] = loadArray(sheet, GHOST_SIZE * 2, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
-        
+
         ghost_up = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {
             ghost_up[i] = loadArray(sheet, GHOST_SIZE * 4, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
-        
+
         ghost_down = new BufferedImage[4][2];
         for (int i = 0; i < 4; i++) {
             ghost_down[i] = loadArray(sheet, GHOST_SIZE * 6, 124 + i * GHOST_SIZE, 2, GHOST_SIZE);
         }
-        
+
         ghost_scared_1 = loadArray(sheet, 0, 124 + GHOST_SIZE * 4, 2, GHOST_SIZE);
         ghost_scared_2 = loadArray(sheet, GHOST_SIZE * 2, 124 + GHOST_SIZE * 4, 2, GHOST_SIZE);
         ghost_eaten = loadArray(sheet, GHOST_SIZE * 4, 124 + GHOST_SIZE * 4, 4, GHOST_SIZE);
@@ -65,6 +67,12 @@ public class Assets {
 
         food = sheet.crop(0, 66, 8, 8);
         powerFood = sheet.crop(8, 66, 18, 18);
+        
+        sound_beginning = new Sound("pacman_beginning");
+        sound_died = new Sound("pacman_death");
+        sound_eatghost = new Sound("pacman_eatghost");
+        sound_intermission = new Sound("pacman_intermission");
+        extralife = new Sound("pacman_extralife");
     }
 
     private static BufferedImage[] loadArray(SpriteSheet sheet, int x, int y, int n, int SIZE) {

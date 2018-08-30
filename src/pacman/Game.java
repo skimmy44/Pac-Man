@@ -183,6 +183,7 @@ public class Game implements Runnable {
 
     public void score(int x) {
         if (score / 10000 != (score + x) / 10000) { // extra life for every 10,000 points scored
+            Assets.extralife.play();
             lives++;
         }
         score += x;

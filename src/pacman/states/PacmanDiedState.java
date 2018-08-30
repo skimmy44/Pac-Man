@@ -5,6 +5,7 @@ import pacman.Handler;
 import pacman.entities.Entity;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.sounds.Sound;
 
 public class PacmanDiedState extends State {
 
@@ -25,6 +26,8 @@ public class PacmanDiedState extends State {
         lastTime = System.currentTimeMillis();
 
         State.setCurrentState(this);
+        
+        Assets.sound_died.play();
     }
 
     @Override

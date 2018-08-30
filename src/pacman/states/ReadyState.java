@@ -3,13 +3,14 @@ package pacman.states;
 import java.awt.Graphics;
 import pacman.Handler;
 import pacman.gfx.Assets;
+import pacman.sounds.Sound;
 import pacman.worlds.World;
 
 public class ReadyState extends State {
 
     private long now, lastTime;
     private int timer;
-    private final int T1 = 30, T2 = 1000;
+    private final int T1 = 4000, T2 = 5000;
 
     public ReadyState(Handler handler) {
         super(handler);
@@ -27,6 +28,8 @@ public class ReadyState extends State {
         lastTime = System.currentTimeMillis();
 
         State.setCurrentState(this);
+        
+        Assets.sound_beginning.play();
     }
 
     @Override

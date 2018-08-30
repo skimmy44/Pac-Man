@@ -2,7 +2,9 @@ package pacman.states;
 
 import java.awt.Graphics;
 import pacman.Handler;
+import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
+import pacman.sounds.Sound;
 
 public class NewRecordState extends State {
 
@@ -35,6 +37,8 @@ public class NewRecordState extends State {
         lastTime = System.currentTimeMillis();
 
         State.setCurrentState(this);
+        
+        Assets.sound_intermission.loop();
     }
 
     @Override
@@ -71,8 +75,9 @@ public class NewRecordState extends State {
             if (handler.getKeyManager().enter) {
                 if (validName()) {
                     handler.getGame().setHighScorePlayer(name());
-
                     writeNewHighScore();
+                    
+                    Assets.sound_intermission.stop();
 
                     handler.getGame().getMenuState().start();
                 }

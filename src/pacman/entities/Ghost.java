@@ -7,9 +7,12 @@ import java.util.Random;
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
+import pacman.sounds.Sound;
 import pacman.tiles.Tile;
 
 public class Ghost extends Creature {
+    
+    public static final float GHOST_SPEED_NORMAL = 2.0f, GHOST_SPEED_SCARED = 1.8f, GHOST_SPEED_DIED = 6.0f;
 
     public static int ghostsEaten = 0;
 
@@ -145,7 +148,7 @@ public class Ghost extends Creature {
     private void tickScaredMode() {
         if (mode == Mode.SCARED) {
             if (timerScared >= TIME_SCARED_2) {
-                speed /= 0.9;
+                speed = GHOST_SPEED_NORMAL;
                 setMode(Mode.CHASE);
             } else if (timerScared >= TIME_SCARED_1) {
                 animScared = timerScared % 200 < 100 ? scared2 : scared1;
@@ -156,31 +159,32 @@ public class Ghost extends Creature {
     private void tickDiedMode() {
         if (mode == Mode.DIED) {
             if (getXTile() == xTarget && getYTile() == yTarget) {   // returned to cage
-                speed /= 3;
+                speed = GHOST_SPEED_NORMAL;
                 setMode(Mode.CHASE);
             }
         }
-    }
+    } 
 
     public void enterScaredMode() {
         if (mode != Mode.CAGE) {
             Ghost.ghostsEaten = 0;
             timerScared = 0;
-            speed *= 0.9;
+            speed = GHOST_SPEED_SCARED;
             setMode(Mode.SCARED);
         }
     }
 
     public void enterDiedMode() {
         if (mode != Mode.DIED) {
+            Assets.sound_eatghost.play();
+            
             indexDied = ghostsEaten;
             xDied = getXTile();
             yDied = getYTile();
             pointsDied = (int) (200 * Math.pow(2, ghostsEaten++));
             handler.getGame().score(pointsDied);
             
-            speed /= 0.9;
-            speed *= 3;
+            speed = GHOST_SPEED_DIED;
             setMode(Mode.DIED);
         }
     }
