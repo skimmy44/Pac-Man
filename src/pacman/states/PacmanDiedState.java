@@ -27,7 +27,8 @@ public class PacmanDiedState extends State {
 
         State.setCurrentState(this);
         
-        Assets.sound_died.play();
+        stopBackgroundSounds();
+        Assets.sound_pacman_died.play();
     }
 
     @Override

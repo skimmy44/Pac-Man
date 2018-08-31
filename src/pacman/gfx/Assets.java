@@ -18,7 +18,10 @@ public class Assets {
     public static BufferedImage world1, world2, food, powerFood;
     public static BufferedImage[] points;
 
-    public static Sound sound_beginning, sound_eat, sound_eatpower, sound_died, sound_eatghost, sound_intermission, extralife;
+    public static Sound 
+            sound_beginning, sound_eat, sound_pacman_died, 
+            sound_ghost_died, sound_intermission, sound_extralife,
+            sound_ghost_chase, sound_pacman_chase, sound_ghost_return;
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/res/textures/sheet.png"));
@@ -68,11 +71,15 @@ public class Assets {
         food = sheet.crop(0, 66, 8, 8);
         powerFood = sheet.crop(8, 66, 18, 18);
         
-        sound_beginning = new Sound("pacman_beginning");
-        sound_died = new Sound("pacman_death");
-        sound_eatghost = new Sound("pacman_eatghost");
-        sound_intermission = new Sound("pacman_intermission");
-        extralife = new Sound("pacman_extralife");
+        sound_beginning = new Sound("beginning");
+        sound_pacman_died = new Sound("pacman_died");
+        sound_ghost_died = new Sound("ghost_died");
+        sound_intermission = new Sound("intermission");
+        sound_extralife = new Sound("extralife");
+        sound_eat = new Sound("pacman_eat");
+        sound_ghost_chase = new Sound("ghost_chase");
+        sound_ghost_return = new Sound("ghost_return");
+        sound_pacman_chase = new Sound("pacman_chase");
     }
 
     private static BufferedImage[] loadArray(SpriteSheet sheet, int x, int y, int n, int SIZE) {

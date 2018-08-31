@@ -176,7 +176,7 @@ public class Ghost extends Creature {
 
     public void enterDiedMode() {
         if (mode != Mode.DIED) {
-            Assets.sound_eatghost.play();
+            Assets.sound_ghost_died.play();
             
             indexDied = ghostsEaten;
             xDied = getXTile();

@@ -29,6 +29,7 @@ public class ReadyState extends State {
 
         State.setCurrentState(this);
         
+        stopBackgroundSounds();
         Assets.sound_beginning.play();
     }
 

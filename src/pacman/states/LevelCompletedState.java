@@ -24,6 +24,8 @@ public class LevelCompletedState extends State {
         how_many_times = HOW_MANY_TIMES;
         
         State.setCurrentState(this);
+        
+        stopBackgroundSounds();
     }
 
     @Override

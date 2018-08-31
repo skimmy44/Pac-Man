@@ -7,7 +7,7 @@ public class Sound {
     private Clip clip;
     
     public Sound(String fileName) {
-        fileName = "/res/sound/" + fileName + ".wav";
+        fileName = "/res/sounds/" + fileName + ".wav";
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(Sound.class.getResource(fileName));
             clip = AudioSystem.getClip();

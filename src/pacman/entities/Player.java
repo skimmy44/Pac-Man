@@ -13,7 +13,7 @@ public class Player extends Creature {
 
     // Animations
     private Animation animUp, animDown, animLeft, animRight;
-    
+
     private int ghostsEaten = 0;
 
     public Player(Handler handler, float x, float y) {
@@ -40,8 +40,8 @@ public class Player extends Creature {
         move();
         checkBounds();
         eat();
-        
-        if (collisionWithGhost()) {     // pacman died
+
+        if (collisionWithGhost()) {     // pacman died    
             handler.getGame().getPacmanDiedState().start();
         }
     }
@@ -62,9 +62,14 @@ public class Player extends Creature {
                 break;
         }
     }
-    
+
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
+//            if (!Assets.sound_eat.isActive()) {
+//                System.out.println("op");
+//                Assets.sound_eat.loop();
+//            }
+            Assets.sound_eat.play();
             int points = handler.getWorld().eatTile(getXTile(), getYTile());
             handler.getGame().score(points);
             if (points == Tile.POWER_FOOD_SCORE) {
@@ -75,6 +80,8 @@ public class Player extends Creature {
             } else {
                 //Sound.play("pacman_chomp");
             }
+        } else {
+//            Assets.sound_eat.stop();
         }
     }
 

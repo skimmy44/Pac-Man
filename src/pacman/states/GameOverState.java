@@ -18,6 +18,8 @@ public class GameOverState extends State {
         lastTime = System.currentTimeMillis();
 
         State.setCurrentState(this);
+        
+        stopBackgroundSounds();
     }
 
     @Override

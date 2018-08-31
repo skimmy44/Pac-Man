@@ -38,6 +38,7 @@ public class NewRecordState extends State {
 
         State.setCurrentState(this);
         
+        stopBackgroundSounds();
         Assets.sound_intermission.loop();
     }
 

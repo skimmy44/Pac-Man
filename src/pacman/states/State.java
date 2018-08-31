@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import pacman.Game;
 import pacman.Handler;
+import pacman.entities.Ghost;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
 
@@ -80,6 +81,51 @@ public abstract class State {
         } else {
             highScoreVisible = true;
         }
+    }
+
+    protected void tickBackgroundSounds() {
+        if (getCurrentState() == handler.getGame().getGameState()) {
+            int sound = 0;
+            for (Ghost g : handler.getEntityManager().getGhosts()) {
+                if (g.getMode() == Ghost.Mode.DIED) {
+                    sound = 2;
+                    break;
+                } else if (g.getMode() == Ghost.Mode.SCARED) {
+                    sound = 1;
+                }
+            }
+            switch (sound) {
+                case 0: // ghosts are chasing
+                    Assets.sound_pacman_chase.stop();
+                    Assets.sound_ghost_return.stop();
+                    if (!Assets.sound_ghost_chase.isActive()) {
+                        Assets.sound_ghost_chase.loop();
+                    }
+                    break;
+                case 1: // pacman is chasing
+                    Assets.sound_ghost_chase.stop();
+                    Assets.sound_ghost_return.stop();
+                    if (!Assets.sound_pacman_chase.isActive()) {
+                        Assets.sound_pacman_chase.loop();
+                    }
+                    break;
+                case 2: // ghost returning to cage
+                    Assets.sound_pacman_chase.stop();
+                    Assets.sound_ghost_chase.stop();
+                    if (!Assets.sound_ghost_return.isActive()) {
+                        Assets.sound_ghost_return.loop();
+                    }
+                    break;
+            }
+        } else {
+            stopBackgroundSounds();
+        }
+    }
+
+    protected void stopBackgroundSounds() {
+        Assets.sound_pacman_chase.stop();
+        Assets.sound_ghost_chase.stop();
+        Assets.sound_ghost_return.stop();
     }
 
     protected void writeNewHighScore() {

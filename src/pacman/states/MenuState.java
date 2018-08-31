@@ -61,6 +61,8 @@ public class MenuState extends State {
         }
 
         State.setCurrentState(this);
+        
+        stopBackgroundSounds();
     }
 
     @Override
