@@ -1,10 +1,19 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
-import pacman.entities.Ghost;
-import pacman.entities.Ghost.Mode;
-import pacman.gfx.Assets;
+
+/**
+ * Game State.
+ * 
+ * - This state starts after Ready State.
+ * - This is when a game is actually played. There isn't much code here because
+ * almost all the game logic is implemented in Player and Ghost classes.
+ * - This state ends when Pacman dies or when a level is completed.
+ * 
+ * @author uross
+ */
 
 public class GameState extends State {
 

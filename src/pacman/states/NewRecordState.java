@@ -1,10 +1,21 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
-import pacman.sounds.Sound;
+
+/**
+ * New Record State.
+ * 
+ * - Starts after Game Over State if a new record is set.
+ * - Waits for the player to type a name. Name has to be between 4 and 8 characters
+ * long, can contain letters, digits or an underscore, but it can't start with a digit.
+ * - When user types a valid name and presses enter, Menu State is activated.
+ * 
+ * @author uross
+ */
 
 public class NewRecordState extends State {
 

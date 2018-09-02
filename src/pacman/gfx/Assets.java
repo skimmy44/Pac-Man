@@ -1,11 +1,16 @@
 package pacman.gfx;
 
 import java.awt.image.BufferedImage;
+
 import pacman.sounds.Sound;
 
-public class Assets {
+/**
+ * This class contains all the assets (images, sprites, sounds, fonts) used in the game code.
+ * 
+ * @author uross
+ */
 
-    private static final int WIDTH = 8, HEIGHT = 8;
+public class Assets {
 
     private static final int DIGIT_SIZE = 9, LETTER_SIZE = 9, GHOST_SIZE = 16, PLAYER_SIZE = 16;
 

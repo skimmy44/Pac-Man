@@ -3,6 +3,16 @@ package pacman.tiles;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+/**
+ * Tile.
+ * 
+ * We are going to use 4 types of tiles for now. This is what all of them will have in common.
+ * We also create 1 instance of each Tile type as static objects because there is
+ * no need to create a new object for each tile on a map (all tiles are the same for us).
+ * 
+ * @author uross
+ */
+
 public class Tile {
 
     // Static stuff

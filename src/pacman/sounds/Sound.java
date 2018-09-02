@@ -1,6 +1,16 @@
 package pacman.sounds;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+
+/**
+ * Handles sounds. Supports .wav audio format and can play the clip once, loop
+ * it infinitely, check if it is active and stop it when needed.
+ * 
+ * @author uross
+ */
 
 public class Sound {
 
@@ -21,6 +31,7 @@ public class Sound {
         try {
             if (clip != null) {
                 new Thread() {
+                    @Override
                     public void run() {
                         synchronized (clip) {
                             clip.stop();
@@ -46,6 +57,7 @@ public class Sound {
         try {
             if (clip != null) {
                 new Thread() {
+                    @Override
                     public void run() {
                         synchronized (clip) {
                             clip.stop();

@@ -1,8 +1,18 @@
 package pacman.entities;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.tiles.Tile;
+
+/**
+ * Entity class.
+ * 
+ * Everything in a game could be an entity. We could have used a Creature class only,
+ * but this might be good if we choose to add some new features, like fruits, obstacles etc.
+ * 
+ * @author uross
+ */
 
 public abstract class Entity {
     

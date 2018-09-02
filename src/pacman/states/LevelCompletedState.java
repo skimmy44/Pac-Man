@@ -1,9 +1,20 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.gfx.Assets;
 import pacman.tiles.Tile;
+
+/**
+ * Level Completed State.
+ * 
+ * - Starts when there is no food left on a map.
+ * - Just a short animation.
+ * - Ready State starts after this.
+ * 
+ * @author uross
+ */
 
 public class LevelCompletedState extends State {
     

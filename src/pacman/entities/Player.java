@@ -2,12 +2,21 @@ package pacman.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
-import pacman.sounds.Sound;
-import pacman.tiles.PowerFoodTile;
 import pacman.tiles.Tile;
+
+/**
+ * Player (Pacman) class.
+ * 
+ * All player logic is here. We get user input, change direction if needed, move,
+ * check for collisions with ghosts, eat and so on. We also update animations, 
+ * award player with points when deserved...
+ * 
+ * @author uross
+ */
 
 public class Player extends Creature {
 
@@ -65,23 +74,14 @@ public class Player extends Creature {
 
     private void eat() {
         if (handler.getWorld().getTile(getXTile(), getYTile()).isEatable()) {
-//            if (!Assets.sound_eat.isActive()) {
-//                System.out.println("op");
-//                Assets.sound_eat.loop();
-//            }
             Assets.sound_eat.play();
             int points = handler.getWorld().eatTile(getXTile(), getYTile());
             handler.getGame().score(points);
             if (points == Tile.POWER_FOOD_SCORE) {
-                //Sound.play("pacman_eatpower");
                 for (Ghost g : handler.getEntityManager().getGhosts()) {
                     g.enterScaredMode();
                 }
-            } else {
-                //Sound.play("pacman_chomp");
             }
-        } else {
-//            Assets.sound_eat.stop();
         }
     }
 

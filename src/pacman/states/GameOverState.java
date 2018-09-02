@@ -1,11 +1,24 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.gfx.Assets;
 
+/**
+ * Game Over State.
+ * 
+ * - Starts when Pacman loses all of his lives.
+ * - Nothing happens during this state other then showing 'Game Over' sign for some time.
+ * - If a new record is set (high score is broken) New Record State is activated, 
+ * otherwise, we go directly to Menu State and new game can start.
+ * 
+ * @author uross
+ */
+
 public class GameOverState extends State {
 
+    private final int T = 3000;
     private long now, lastTime, timer;
 
     public GameOverState(Handler handler) {
@@ -28,7 +41,7 @@ public class GameOverState extends State {
         timer += now - lastTime;
         lastTime = now;
 
-        if (timer >= 3000) {
+        if (timer >= T) {
             if (handler.getGame().isNewRecord()) {
                 handler.getGame().getNewRecordState().start();
             } else {

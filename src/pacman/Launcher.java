@@ -1,5 +1,11 @@
 package pacman;
 
+/**
+ * Main class, game starts here.
+ * 
+ * @author uross
+ */
+
 public class Launcher {
 
     public static void main(String[] args) {

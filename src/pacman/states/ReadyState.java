@@ -1,10 +1,22 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.gfx.Assets;
-import pacman.sounds.Sound;
 import pacman.worlds.World;
+
+/**
+ * Ready State.
+ * 
+ * - Becomes active after Menu State when space is pressed, when a level is completed
+ * or when Pacman dies but it still has some lives left.
+ * - This is when a player gets ready for a game. Intro theme is played, new level is
+ * loaded if needed and a game can start.
+ * - After this state comes the Game State.
+ * 
+ * @author uross
+ */
 
 public class ReadyState extends State {
 

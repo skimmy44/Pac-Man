@@ -1,11 +1,26 @@
 package pacman.worlds;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.entities.EntityManager;
 import pacman.gfx.Assets;
 import pacman.tiles.Tile;
 import pacman.utils.Utils;
+
+/**
+ * World. This is a map for our game.
+ * 
+ * The map is loaded to a 2d matrix here which is later used to check whether a tile
+ * is eatable or solid etc.
+ * 
+ * We keep track of the food left so we can know when the level is completed.
+ * 
+ * lockCage() and unlockCage() methods are used in the beginning of the game to let
+ * the ghosts out of the cage one by one.
+ * 
+ * @author uross
+ */
 
 public class World {
 

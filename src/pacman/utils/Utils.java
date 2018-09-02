@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Helper class, used for reading files. We use it for loading a map (world).
+ * 
+ * @author uross
+ */
+
 public class Utils {
 
     public static String loadFileAsString(String path) {

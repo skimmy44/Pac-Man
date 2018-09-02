@@ -2,7 +2,17 @@ package pacman.entities;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+
 import pacman.Handler;
+
+/**
+ * Entity Manager.
+ * 
+ * Object is created in World class. It is one of the objects a Handler contains.
+ * We use it to easily access Player (Pacman) and Ghost objects when needed.
+ * 
+ * @author uross
+ */
 
 public class EntityManager {
 

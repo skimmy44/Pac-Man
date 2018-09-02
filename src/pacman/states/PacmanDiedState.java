@@ -1,11 +1,22 @@
 package pacman.states;
 
 import java.awt.Graphics;
+
 import pacman.Handler;
 import pacman.entities.Entity;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
-import pacman.sounds.Sound;
+
+/**
+ * Pacman Died State.
+ * 
+ * - Becomes active when Pacman dies (obviously).
+ * - During this state we only play a sound and show an animation of Pacman dying.
+ * - After this state we start the Ready State if a player has some lives left, 
+ * otherwise the Game Over State is activated.
+ * 
+ * @author uross
+ */
 
 public class PacmanDiedState extends State {
 

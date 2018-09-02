@@ -4,11 +4,46 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
+
 import pacman.Handler;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
-import pacman.sounds.Sound;
 import pacman.tiles.Tile;
+
+/**
+ * Ghost class.
+ * 
+ * There are 4 types of ghosts. They differ in color and also in behavior, i.e. have
+ * different movement rules.
+ * 
+ * Unlike Pacman movement, Ghost movement is not led by user input, but with simple
+ * AI algorithms. A ghost has a target tile which it wants to reach. We reset that
+ * target tile according to Pacman position and also depending on a mode the ghost is in.
+ * Then a ghost takes a shortest path to that target and that's how the it moves.
+ * 
+ * Ghosts have several different states or modes in which they act and move differently.
+ * The idea was to create something similar to game states, but all these modes should
+ * correspond to the Game State, and there are 4 ghosts which don't have to be in same
+ * modes all the time, so for every ghost we remember which mode is he in and update its
+ * variables accordingly.
+ * 
+ * Ghost modes are:
+ *  - Cage: after Ready State 3 ghosts start from a ghost house (or a cage) and get out
+ *    of it one by one.
+ *  - Chase: main ghost mode. In this mode a ghost can eat Pacman, and its movement is
+ *    defined by the position of Pacman and sometimes the position of other ghosts.
+ *  - Scatter: in this mode every ghost has a fixed target tile which cannot be reached
+ *    because it is outside of the map, so the ghosts start looping infinitely. This mode
+ *    starts and ends on timer, and it exists so the game wouldn't be too exhausting
+ *    with ghosts trying to eat Pacman all the time.
+ *  - Scared: this mode starts for each ghost when Pacman eats Power Food and lasts
+ *    a fixed amount of time. During this mode ghosts move pseudorandomly, and Pacman
+ *    can eat a ghost.
+ *  - Died: when Pacman eats a ghost, the ghost enters Died mode in which it finds the
+ *    shortest path to the cage, and as soon as it gets there it starts the Chase again.
+ * 
+ * @author uross
+ */
 
 public class Ghost extends Creature {
     
@@ -207,6 +242,7 @@ public class Ghost extends Creature {
         }
     }
 
+    // 'AI' for ghost movement
     private void retarget() {
         if (mode == Mode.SCATTER) {
             xTarget = DEFAULT_X_TARGET;
@@ -316,6 +352,7 @@ public class Ghost extends Creature {
         }
     }
 
+    // taking the shortest path from a junction, following some simple rules
     private void turn() {
         if (mode == Mode.CAGE) {
             if (!canMove()) {
@@ -326,9 +363,6 @@ public class Ghost extends Creature {
         }
 
         if (!(xNext == getXTile() && yNext == getYTile())) {
-//            if (currentDirection == null) {
-//                currentDirection = Direction.RIGHT;
-//            }
             setNext(currentDirection);
             return;
         }
@@ -339,6 +373,7 @@ public class Ghost extends Creature {
         possibleMove[2] = !handler.getWorld().getTile(getXTile() - 1, getYTile()).isSolid();    // left
         possibleMove[3] = !handler.getWorld().getTile(getXTile() + 1, getYTile()).isSolid();    // right
 
+        // a ghost can never reverse a direction
         switch (currentDirection) {
             case UP:
                 possibleMove[1] = false;

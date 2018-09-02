@@ -3,19 +3,19 @@ package pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+
 import pacman.display.Display;
 import pacman.gfx.Assets;
 import pacman.input.KeyManager;
-import pacman.states.GameOverState;
-import pacman.states.GameState;
-import pacman.states.LevelCompletedState;
-import pacman.states.MenuState;
-import pacman.states.NewRecordState;
-import pacman.states.PacmanDiedState;
-import pacman.states.ReadyState;
-import pacman.states.State;
+import pacman.states.*;
 import pacman.utils.Utils;
 import pacman.worlds.World;
+
+/**
+ * Main game engine.
+ * 
+ * @author uross
+ */
 
 public class Game implements Runnable {
 
@@ -135,6 +135,10 @@ public class Game implements Runnable {
         g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
 
+        /*
+            Translate the origin so the y axis starts where the game board starts.
+            We use the upper part of the window for drawing score.
+        */
         g.translate(0, 55);
 
         // Draw here:
@@ -158,6 +162,7 @@ public class Game implements Runnable {
         int ticks = 0;
         long lastTime = System.nanoTime();
 
+        // Main game loop
         while (running) {
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
@@ -281,7 +286,15 @@ public class Game implements Runnable {
     }
 
     public synchronized void stop() {
-
+        if (!running) {
+            return;
+        }
+        running = false;
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

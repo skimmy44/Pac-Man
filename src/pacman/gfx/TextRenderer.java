@@ -2,6 +2,13 @@ package pacman.gfx;
 
 import java.awt.Graphics;
 
+/**
+ * Writes text to the screen. Actually uses letters, digits and special characters
+ * from Assets class and draws them to the screen as needed.
+ * 
+ * @author uross
+ */
+
 public class TextRenderer {
     
     public static int LETTER_WIDTH = 20, LETTER_HEIGHT = 20,

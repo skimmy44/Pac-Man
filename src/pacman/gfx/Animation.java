@@ -2,6 +2,13 @@ package pacman.gfx;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Animation class. Loops through the array of frames in certain speed and
+ * creates the illusion of movement - animation.
+ * 
+ * @author uross
+ */
+
 public class Animation {
     
     private int speed;  // ms

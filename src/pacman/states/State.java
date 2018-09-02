@@ -4,24 +4,27 @@ import java.awt.Graphics;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import pacman.Game;
 import pacman.Handler;
 import pacman.entities.Ghost;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
 
+/**
+ * State class.
+ * 
+ * currentState - a static variable, we tick it in Game class.
+ * 
+ * Every class that extends this class will have:
+ *  - start(), tick() and render(Graphics g) methods which will be overriden
+ *  - several protected methods which handle some game variables that are not 
+ *    linked to a specific State
+ *
+ * @author uross
+ */
 public abstract class State {
 
-    /* States to be implemented:
-        - title
-        - ready
-        - playing (game state)
-        - pacman died
-        ghost died - can also be a ghost state
-        - level completed
-        - game over
-        - new record (enter name)
-     */
     // Static stuff
     private static State currentState = null;
 
@@ -49,6 +52,8 @@ public abstract class State {
 
     public abstract void render(Graphics g);
 
+    // The following methods are to be used by all classes that extend this class:
+    //
     protected void tickScoreAndLives() {
         if (lastMoment < 0) {
             lastMoment = System.currentTimeMillis();
@@ -128,6 +133,7 @@ public abstract class State {
         Assets.sound_ghost_return.stop();
     }
 
+    // writes new high score in score.txt (overwrites it if needed, only 1 score is remembered)
     protected void writeNewHighScore() {
         File file = new File("./score.txt");
         String source = Integer.toString(handler.getGame().getHighScore()) + " " + handler.getGame().getHighScorePlayer();

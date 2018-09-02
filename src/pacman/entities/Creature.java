@@ -3,6 +3,16 @@ package pacman.entities;
 import pacman.Handler;
 import pacman.tiles.Tile;
 
+/**
+ * Creature class.
+ * 
+ * Pacman and Ghosts are going to be our creatures (Player and Ghost class will extend
+ * this class). Here we implemented some methods that mostly regard the creature movement
+ * and will be used by both Pacman and Ghosts.
+ * 
+ * @author uross
+ */
+
 public abstract class Creature extends Entity {
 
     public static enum Direction {

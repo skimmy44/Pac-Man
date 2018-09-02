@@ -4,6 +4,14 @@ import pacman.entities.EntityManager;
 import pacman.input.KeyManager;
 import pacman.worlds.World;
 
+/**
+ * Helper class. We create one Handler object which holds references to multiple
+ * useful objects. Then we pass this single Handler object as a parameter instead
+ * of passing all the managers one by one.
+ * 
+ * @author uross
+ */
+
 public class Handler {
 
     private Game game;

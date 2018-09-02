@@ -3,7 +3,14 @@ package pacman.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
+
 import pacman.entities.Creature.Direction;
+
+/**
+ * Handles keyboard input.
+ * 
+ * @author uross
+ */
 
 public class KeyManager implements KeyListener {
 

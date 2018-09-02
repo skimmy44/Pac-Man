@@ -5,6 +5,12 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 
+/**
+ * Window for our game.
+ * 
+ * @author uross
+ */
+
 public class Display {
     
     private JFrame frame;

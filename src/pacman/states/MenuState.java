@@ -1,12 +1,26 @@
 package pacman.states;
 
-import com.sun.javafx.scene.traversal.Direction;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import pacman.Handler;
+import pacman.entities.Creature.Direction;
 import pacman.gfx.Animation;
 import pacman.gfx.Assets;
 import pacman.gfx.TextRenderer;
+
+/**
+ * Menu State.
+ * 
+ * - This is the first active state in our game. It also becomes active when a game ends
+ * (after Game Over State or New Record State).
+ * - Nothing important happens during this state. It only loads a title animation, has an
+ * animation of Pacman and ghosts looping infinitely and waits for user to start a game.
+ * - After this state always comes the Ready State, and that happens when a title is
+ * loaded and user presses space.
+ * 
+ * @author uross
+ */
 
 public class MenuState extends State {
 
